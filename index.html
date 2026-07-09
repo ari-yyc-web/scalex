@@ -1487,6 +1487,40 @@
                 margin-left: 4px;
             }
 
+            /* --- FORCE SERVICES & PROCESS TO BE FULLY EXPANDED ON DESKTOP --- */
+            .service-body {
+                grid-template-rows: 1fr !important;
+            }
+            .service-toggle {
+                display: none !important;
+            }
+            .service-card {
+                cursor: default;
+            }
+            /* Ensure inner padding is applied when expanded */
+            .service-body .service-inner {
+                padding-bottom: 0;
+            }
+            .service-body p {
+                padding-bottom: 20px;
+            }
+
+            .process-body {
+                grid-template-rows: 1fr !important;
+            }
+            .process-toggle {
+                display: none !important;
+            }
+            .process-step {
+                cursor: default;
+            }
+            .process-body .process-inner {
+                padding-bottom: 0;
+            }
+            .process-body p {
+                padding-bottom: 16px;
+            }
+
             /* Featured card desktop layout */
             .pricing-card.featured {
                 margin-top: 0;
@@ -2264,7 +2298,7 @@
                 </div>
             </div>
 
-            <!-- Featured Card 4: Full Care Plan (FIXED) -->
+            <!-- Featured Card 4: Full Care Plan -->
             <div class="pricing-card featured reveal" style="transition-delay: 0.35s; margin-top: 24px;">
                 <div class="featured-content">
                     <div class="featured-left">
@@ -2541,13 +2575,19 @@
                 });
             });
 
-            // ---- ACCORDION: Services & Process ----
+            // ---- ACCORDION: Services & Process (Mobile only) ----
             const accordionHeaders = document.querySelectorAll('.service-header, .process-header');
 
             accordionHeaders.forEach(function(header) {
                 header.addEventListener('click', function(e) {
                     const parent = this.closest('.service-card, .process-step');
                     if (!parent) return;
+
+                    // Check if we're on desktop (toggle hidden) - if so, ignore click
+                    const toggle = parent.querySelector('.service-toggle, .process-toggle');
+                    if (toggle && window.getComputedStyle(toggle).display === 'none') {
+                        return;
+                    }
 
                     const isActive = parent.classList.contains('active');
 

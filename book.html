@@ -1,0 +1,2069 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Book a Call — Scalex</title>
+    <meta name="description" content="Schedule a free consultation with Scalex to discuss your business goals and how we can help you grow with technology." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,600;14..32,800&display=swap" rel="stylesheet" />
+
+    <style>
+        /* ===== RESET & BASE ===== */
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f5f5f5;
+            --bg-card: #ffffff;
+            --text-primary: #1a1a1a;
+            --text-secondary: #5a5a5a;
+            --text-muted: #7a7a7a;
+            --border-color: #e8e8e8;
+            --border-hover: #cccccc;
+            --hero-bg: #0a0a0a;
+            --hero-text: #ffffff;
+            --hero-sub: #aaaaaa;
+            --shadow-sm: 0 2px 24px rgba(0, 0, 0, 0.06);
+            --shadow-md: 0 12px 48px rgba(0, 0, 0, 0.06);
+            --btn-primary-bg: #ffffff;
+            --btn-primary-text: #0a0a0a;
+            --btn-primary-hover: #f0f0f0;
+            --logo-filter: none;
+            --footer-bg: #1a1a1a;
+            --footer-text: #aaaaaa;
+            --footer-border: #2a2a2a;
+            --nav-bg: rgba(255, 255, 255, 0.92);
+            --nav-border: #e8e8e8;
+            --nav-scrolled: rgba(255, 255, 255, 0.97);
+            --toggle-bg: #e8e8e8;
+            --toggle-dot: #ffffff;
+            --radius: 8px;
+            --font: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            --transition: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --spinner-color: #1a1a1a;
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: #1a1a1a;
+            --text-primary: #f0f0f0;
+            --text-secondary: #aaaaaa;
+            --text-muted: #7a7a7a;
+            --border-color: #2a2a2a;
+            --border-hover: #444444;
+            --hero-bg: #000000;
+            --hero-text: #ffffff;
+            --hero-sub: #888888;
+            --shadow-sm: 0 2px 24px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 12px 48px rgba(0, 0, 0, 0.4);
+            --btn-primary-bg: #ffffff;
+            --btn-primary-text: #0a0a0a;
+            --btn-primary-hover: #e0e0e0;
+            --logo-filter: invert(1) brightness(10);
+            --footer-bg: #0a0a0a;
+            --footer-text: #888888;
+            --footer-border: #1a1a1a;
+            --nav-bg: rgba(10, 10, 10, 0.92);
+            --nav-border: #1a1a1a;
+            --nav-scrolled: rgba(10, 10, 10, 0.97);
+            --toggle-bg: #2a2a2a;
+            --toggle-dot: #0a0a0a;
+            --spinner-color: #f0f0f0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-text-size-adjust: 100%;
+        }
+
+        body {
+            font-family: var(--font);
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        /* ===== SCROLL ANIMATIONS ===== */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .reveal.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--nav-border);
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .navbar.scrolled {
+            background: var(--nav-scrolled);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .navbar .container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 68px;
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            flex-shrink: 0;
+            min-height: 44px;
+            min-width: 44px;
+            text-decoration: none;
+        }
+
+        .logo-img {
+            height: 36px;
+            width: auto;
+            display: block;
+            filter: var(--logo-filter);
+            transition: filter var(--transition);
+        }
+
+        .nav-links {
+            display: none;
+            list-style: none;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            letter-spacing: 0.2px;
+            padding: 8px 18px;
+            border-radius: var(--radius);
+            transition: all var(--transition);
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+            background: var(--bg-secondary);
+        }
+
+        .nav-cta {
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text) !important;
+            padding: 10px 28px !important;
+            border-radius: var(--radius);
+            font-weight: 600;
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+            transition: all var(--transition);
+            border: none;
+            cursor: pointer;
+        }
+
+        .nav-cta:hover {
+            background: var(--btn-primary-hover) !important;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.12);
+            color: var(--btn-primary-text) !important;
+        }
+
+        .theme-toggle {
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            min-height: 44px;
+            min-width: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .toggle-track {
+            width: 56px;
+            height: 30px;
+            border-radius: 50px;
+            background: var(--toggle-bg);
+            position: relative;
+            transition: background var(--transition);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6px;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .toggle-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: var(--toggle-dot);
+            position: absolute;
+            top: 4px;
+            left: 4px;
+            transition: transform var(--transition), background var(--transition);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+        }
+
+        .toggle-dot.dark {
+            transform: translateX(26px);
+        }
+
+        .toggle-icon {
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.4;
+            transition: opacity var(--transition);
+            color: var(--text-primary);
+            stroke: currentColor;
+            stroke-width: 2;
+            fill: none;
+        }
+
+        .toggle-icon.active {
+            opacity: 1;
+        }
+
+        .hamburger {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 8px 4px;
+            min-height: 44px;
+            min-width: 44px;
+            align-items: center;
+            justify-content: center;
+            touch-action: manipulation;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 26px;
+            height: 2px;
+            background: var(--text-primary);
+            border-radius: 2px;
+            transition: all var(--transition);
+            transform-origin: center;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: translateY(7px) rotate(45deg);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: translateY(-7px) rotate(-45deg);
+        }
+
+        .mobile-menu {
+            position: fixed;
+            top: 68px;
+            left: 0;
+            right: 0;
+            background: var(--nav-bg);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            padding: 24px 24px 32px;
+            transform: translateY(-120%);
+            transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1), background var(--transition);
+            border-bottom: 1px solid var(--nav-border);
+            z-index: 999;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .mobile-menu.open {
+            transform: translateY(0);
+        }
+
+        .mobile-menu ul {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 10px 0;
+            display: block;
+            min-height: 44px;
+            border-bottom: 1px solid var(--border-color);
+            transition: color var(--transition), border-color var(--transition);
+        }
+
+        .mobile-menu a:hover {
+            color: var(--text-primary);
+        }
+
+        .mobile-menu .mobile-cta {
+            margin-top: 12px;
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text) !important;
+            text-align: center;
+            padding: 14px;
+            border-radius: var(--radius);
+            font-weight: 600;
+            border-bottom: none;
+            min-height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .mobile-menu .mobile-cta:hover {
+            background: var(--btn-primary-hover);
+        }
+
+        /* ===== BOOKING HEADER ===== */
+        .booking-header {
+            background: var(--hero-bg);
+            color: var(--hero-text);
+            padding: 120px 0 60px;
+            transition: background var(--transition), color var(--transition);
+        }
+
+        .booking-header .container {
+            max-width: 820px;
+        }
+
+        .booking-label {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            color: var(--hero-sub);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            padding: 6px 16px;
+            border-radius: 100px;
+            margin-bottom: 24px;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .booking-header h1 {
+            font-size: clamp(2.2rem, 5vw, 3.4rem);
+            font-weight: 800;
+            line-height: 1.1;
+            letter-spacing: -0.02em;
+            margin-bottom: 16px;
+            color: var(--hero-text);
+        }
+
+        .booking-header p {
+            font-size: 1.2rem;
+            color: var(--hero-sub);
+            max-width: 580px;
+            line-height: 1.7;
+        }
+
+        /* ===== BOOKING UI ===== */
+        .booking-section {
+            padding: 40px 0 80px;
+            background: var(--bg-primary);
+            transition: background var(--transition);
+        }
+
+        .booking-card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            border: 1px solid var(--border-color);
+            padding: 28px 24px;
+            max-width: 900px;
+            margin: 0 auto;
+            box-shadow: var(--shadow-sm);
+            transition: background var(--transition), border-color var(--transition), box-shadow var(--transition);
+        }
+
+        .booking-card:hover {
+            border-color: var(--border-hover);
+            box-shadow: var(--shadow-md);
+        }
+
+        /* ---- Step indicator ---- */
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+            transition: border-color var(--transition);
+        }
+
+        .step-dot {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            background: var(--bg-secondary);
+            color: var(--text-muted);
+            border: 2px solid var(--border-color);
+            transition: all var(--transition);
+            flex-shrink: 0;
+        }
+
+        .step-dot.active {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+        }
+
+        .step-dot.done {
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            border-color: var(--text-primary);
+            opacity: 0.5;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 2px;
+            background: var(--border-color);
+            transition: background var(--transition);
+            max-width: 60px;
+        }
+
+        .step-line.done {
+            background: var(--text-primary);
+            opacity: 0.3;
+        }
+
+        .step-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            transition: color var(--transition);
+        }
+
+        .step-label.active {
+            color: var(--text-primary);
+        }
+
+        /* ---- Step content ---- */
+        .step-content {
+            display: none;
+            animation: fadeSlideIn 0.4s ease;
+        }
+
+        .step-content.active {
+            display: block;
+        }
+
+        @keyframes fadeSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(16px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .step-title {
+            font-size: 1.1rem;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-primary);
+        }
+
+        .step-subtitle {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            margin-bottom: 20px;
+        }
+
+        /* ---- Date picker ---- */
+        .date-picker {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 4px 2px 12px 2px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+        }
+
+        .date-picker::-webkit-scrollbar {
+            height: 4px;
+        }
+
+        .date-picker::-webkit-scrollbar-track {
+            background: var(--bg-secondary);
+            border-radius: 4px;
+        }
+
+        .date-picker::-webkit-scrollbar-thumb {
+            background: var(--border-hover);
+            border-radius: 4px;
+        }
+
+        .date-btn {
+            flex-shrink: 0;
+            padding: 12px 18px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            font-size: 0.85rem;
+            font-weight: 500;
+            text-align: center;
+            min-width: 70px;
+            scroll-snap-align: start;
+            min-height: 60px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .date-btn:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-secondary);
+        }
+
+        .date-btn .day-name {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+        .date-btn .day-number {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .date-btn.selected {
+            border-color: var(--text-primary);
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .date-btn.selected .day-name,
+        .date-btn.selected .day-number {
+            color: var(--bg-primary);
+        }
+
+        .date-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        /* ---- Time slots ---- */
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+            gap: 10px;
+            margin-top: 16px;
+        }
+
+        .time-btn {
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all var(--transition);
+            font-family: var(--font);
+            font-size: 0.9rem;
+            font-weight: 500;
+            text-align: center;
+            min-height: 48px;
+        }
+
+        .time-btn:hover:not(:disabled) {
+            border-color: var(--border-hover);
+            background: var(--bg-secondary);
+        }
+
+        .time-btn.selected {
+            border-color: var(--text-primary);
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .time-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .no-slots {
+            padding: 24px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+        }
+
+        /* ---- Form ---- */
+        .booking-form {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            margin-top: 8px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .form-group label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .form-group label .required {
+            color: #e74c3c;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            font-family: var(--font);
+            font-size: 1rem;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            transition: border-color var(--transition), background var(--transition), color var(--transition);
+            min-height: 48px;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--text-primary);
+        }
+
+        .form-group input.error,
+        .form-group select.error {
+            border-color: #e74c3c;
+        }
+
+        .form-error {
+            font-size: 0.8rem;
+            color: #e74c3c;
+            margin-top: 2px;
+            display: none;
+        }
+
+        .form-error.visible {
+            display: block;
+        }
+
+        .selected-slot-display {
+            padding: 12px 16px;
+            background: var(--bg-secondary);
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            border: 1px solid var(--border-color);
+            margin-bottom: 4px;
+        }
+
+        .selected-slot-display strong {
+            color: var(--text-primary);
+        }
+
+        /* ---- Buttons ---- */
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border: none;
+            border-radius: var(--radius);
+            font-family: var(--font);
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            min-height: 52px;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            opacity: 0.85;
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .btn-primary:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px 28px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: var(--font);
+            font-weight: 500;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all var(--transition);
+            min-height: 48px;
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-secondary);
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+            flex-wrap: wrap;
+        }
+
+        /* ---- Loading spinner ---- */
+        .spinner {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid var(--border-color);
+            border-top-color: var(--spinner-color);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .loading-overlay {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 20px;
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* ---- Confirmation ---- */
+        .confirmation {
+            text-align: center;
+            padding: 20px 0;
+        }
+
+        .confirmation .checkmark {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: var(--text-primary);
+            color: var(--bg-primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 20px;
+            font-size: 2rem;
+        }
+
+        .confirmation h3 {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-primary);
+        }
+
+        .confirmation p {
+            color: var(--text-secondary);
+            max-width: 400px;
+            margin: 0 auto 8px;
+        }
+
+        .confirmation .booking-details {
+            background: var(--bg-secondary);
+            padding: 16px 20px;
+            border-radius: var(--radius);
+            margin: 16px auto;
+            max-width: 360px;
+            border: 1px solid var(--border-color);
+            font-size: 0.95rem;
+        }
+
+        .confirmation .booking-details strong {
+            color: var(--text-primary);
+        }
+
+        /* ---- Error banner ---- */
+        .error-banner {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 12px 16px;
+            border-radius: var(--radius);
+            font-size: 0.95rem;
+            margin-bottom: 16px;
+            border: 1px solid #fecaca;
+            display: none;
+        }
+
+        [data-theme="dark"] .error-banner {
+            background: #7f1d1d;
+            color: #fecaca;
+            border-color: #991b1b;
+        }
+
+        .error-banner.visible {
+            display: block;
+        }
+
+        /* ===== TRUST BULLETS (mini) ===== */
+        .trust-mini {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-top: 24px;
+            padding-top: 20px;
+            border-top: 1px solid var(--border-color);
+            transition: border-color var(--transition);
+        }
+
+        .trust-mini-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .trust-mini-item svg {
+            flex-shrink: 0;
+            width: 20px;
+            height: 20px;
+            stroke: var(--text-primary);
+            stroke-width: 2;
+            fill: none;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        /* ===== FOOTER ===== */
+        footer {
+            background: var(--footer-bg);
+            color: var(--footer-text);
+            padding: 48px 0 32px;
+            border-top: 1px solid var(--footer-border);
+            transition: background var(--transition), color var(--transition), border-color var(--transition);
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 32px;
+        }
+
+        .footer-brand .logo-img {
+            height: 34px;
+            filter: var(--logo-filter);
+            transition: filter var(--transition);
+        }
+
+        .footer-brand p {
+            margin-top: 12px;
+            font-size: 0.9rem;
+            max-width: 280px;
+            color: var(--footer-text);
+        }
+
+        .footer-links h5 {
+            color: var(--hero-text);
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 12px;
+            letter-spacing: 0.3px;
+        }
+
+        .footer-links ul {
+            list-style: none;
+        }
+
+        .footer-links ul li {
+            margin-bottom: 8px;
+        }
+
+        .footer-links ul a {
+            color: var(--footer-text);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color var(--transition);
+            min-height: 36px;
+            display: inline-block;
+        }
+
+        .footer-links ul a:hover {
+            color: var(--hero-text);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .footer-social a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid var(--footer-border);
+            color: var(--footer-text);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: border-color var(--transition), color var(--transition), background var(--transition);
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .footer-social a:hover {
+            border-color: var(--hero-text);
+            color: var(--hero-text);
+            background: rgba(255, 255, 255, 0.05);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid var(--footer-border);
+            margin-top: 32px;
+            padding-top: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--footer-text);
+            transition: border-color var(--transition);
+        }
+
+        /* ===== RESPONSIVE ===== */
+        @media (min-width: 640px) {
+            .footer-grid {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+
+            .trust-mini {
+                flex-direction: row;
+                justify-content: space-around;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+            }
+        }
+
+        @media (min-width: 768px) {
+            .container {
+                padding: 0 40px;
+            }
+
+            .hamburger {
+                display: none;
+            }
+
+            .nav-links {
+                display: flex;
+            }
+
+            .mobile-menu {
+                display: none !important;
+            }
+
+            .navbar .container {
+                gap: 16px;
+            }
+
+            .nav-links {
+                gap: 4px;
+            }
+
+            .theme-toggle {
+                margin-left: 4px;
+            }
+
+            .booking-header {
+                padding: 140px 0 80px;
+            }
+
+            .booking-card {
+                padding: 36px 32px;
+            }
+
+            .date-picker {
+                gap: 12px;
+            }
+
+            .date-btn {
+                min-width: 80px;
+                padding: 14px 20px;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+                gap: 12px;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .container {
+                padding: 0 60px;
+            }
+
+            .nav-links {
+                gap: 6px;
+            }
+        }
+
+        @media (min-width: 1440px) {
+            .container {
+                max-width: 1300px;
+                padding: 0 80px;
+            }
+
+            .nav-links {
+                gap: 8px;
+            }
+        }
+
+        /* Mobile: date picker horizontal scroll hint */
+        .date-picker-wrapper {
+            position: relative;
+        }
+
+        .date-picker-wrapper .scroll-hint {
+            display: none;
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .date-picker-wrapper .scroll-hint {
+                display: block;
+            }
+
+            .date-btn {
+                min-width: 62px;
+                padding: 10px 14px;
+                min-height: 52px;
+            }
+
+            .date-btn .day-number {
+                font-size: 0.95rem;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+                gap: 8px;
+            }
+
+            .time-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+                min-height: 42px;
+            }
+
+            .booking-card {
+                padding: 20px 16px;
+            }
+
+            .step-indicator {
+                gap: 8px;
+            }
+
+            .step-dot {
+                width: 28px;
+                height: 28px;
+                font-size: 0.7rem;
+            }
+
+            .step-label {
+                font-size: 0.65rem;
+            }
+
+            .step-line {
+                max-width: 30px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn-primary,
+            .form-actions .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
+        /* Touch-friendly */
+        button,
+        .nav-cta,
+        .hamburger,
+        .footer-social a,
+        .mobile-menu a,
+        .nav-links a,
+        .theme-toggle,
+        .logo-link,
+        .date-btn,
+        .time-btn,
+        .btn-primary,
+        .btn-secondary {
+            min-height: 44px;
+            min-width: 44px;
+        }
+
+        .nav-links a {
+            min-height: 44px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            .navbar {
+                position: static;
+                background: white;
+                backdrop-filter: none;
+            }
+            .booking-header {
+                background: white;
+                color: black;
+                padding: 40px 0;
+            }
+            .booking-header h1 {
+                color: black;
+            }
+            .booking-header p {
+                color: var(--gray-600);
+            }
+            .booking-label {
+                color: var(--gray-600);
+                border-color: #ccc;
+            }
+            footer {
+                background: #f5f5f5;
+                color: var(--gray-600);
+                border-top: 1px solid #ddd;
+            }
+            .footer-brand .logo-img {
+                filter: none;
+            }
+            .footer-links h5 {
+                color: black;
+            }
+            .footer-links ul a {
+                color: var(--gray-600);
+            }
+            .footer-social a {
+                border-color: #ccc;
+                color: var(--gray-600);
+            }
+            .footer-bottom {
+                border-top-color: #ddd;
+            }
+            .theme-toggle {
+                display: none !important;
+            }
+            .hamburger {
+                display: none !important;
+            }
+            .nav-links {
+                display: flex !important;
+            }
+            .mobile-menu {
+                display: none !important;
+            }
+            .nav-cta {
+                display: inline-flex !important;
+            }
+            .booking-card {
+                box-shadow: none !important;
+                border: 1px solid #ddd !important;
+            }
+            .date-btn,
+            .time-btn {
+                border-color: #ddd !important;
+            }
+            .date-btn.selected,
+            .time-btn.selected {
+                background: #333 !important;
+                color: white !important;
+                border-color: #333 !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== NAVBAR ===== -->
+    <header class="navbar" id="navbar" role="banner">
+        <div class="container">
+            <a href="#" class="logo-link" aria-label="Scalex home">
+                <img src="logo.svg" alt="Scalex" class="logo-img" width="130" height="40" />
+            </a>
+
+            <nav class="nav-links" aria-label="Main navigation">
+                <a href="#services">Services</a>
+                <a href="#about">About</a>
+                <a href="#process">Process</a>
+                <a href="#pricing">Pricing</a>
+                <a href="#testimonials">Testimonials</a>
+                <a href="#cta" class="nav-cta">Get Started</a>
+            </nav>
+
+            <div style="display:flex; align-items:center; gap:8px;">
+                <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
+                    <span class="toggle-track">
+                        <svg class="toggle-icon sun active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="12" cy="12" r="5" />
+                            <line x1="12" y1="1" x2="12" y2="3" />
+                            <line x1="12" y1="21" x2="12" y2="23" />
+                            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                            <line x1="1" y1="12" x2="3" y2="12" />
+                            <line x1="21" y1="12" x2="23" y2="12" />
+                            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+                        </svg>
+                        <svg class="toggle-icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+                        </svg>
+                        <span class="toggle-dot" id="toggleDot"></span>
+                    </span>
+                </button>
+
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- ===== MOBILE MENU ===== -->
+    <div class="mobile-menu" id="mobileMenu" role="navigation" aria-label="Mobile navigation">
+        <ul>
+            <li><a href="#services" class="mobile-link">Services</a></li>
+            <li><a href="#about" class="mobile-link">About</a></li>
+            <li><a href="#process" class="mobile-link">Process</a></li>
+            <li><a href="#pricing" class="mobile-link">Pricing</a></li>
+            <li><a href="#testimonials" class="mobile-link">Testimonials</a></li>
+            <li><a href="#cta" class="mobile-cta">Get Started</a></li>
+        </ul>
+    </div>
+
+    <!-- ===== BOOKING HEADER ===== -->
+    <section class="booking-header">
+        <div class="container">
+            <div class="reveal">
+                <span class="booking-label">Book a Call</span>
+                <h1>Let's Talk About Growing Your Business</h1>
+                <p>Pick a time that works for you — we'll walk through your goals and how Scalex can help.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== BOOKING UI ===== -->
+    <section class="booking-section">
+        <div class="container">
+            <div class="booking-card reveal">
+
+                <!-- Step Indicator -->
+                <div class="step-indicator">
+                    <div class="step-dot active" id="stepDot1">1</div>
+                    <div class="step-line" id="stepLine1"></div>
+                    <span class="step-label active" id="stepLabel1">Pick Time</span>
+                    <div class="step-dot" id="stepDot2">2</div>
+                    <div class="step-line" id="stepLine2"></div>
+                    <span class="step-label" id="stepLabel2">Your Details</span>
+                    <div class="step-dot" id="stepDot3">3</div>
+                    <span class="step-label" id="stepLabel3">Confirm</span>
+                </div>
+
+                <!-- Error Banner -->
+                <div class="error-banner" id="errorBanner"></div>
+
+                <!-- ===== STEP 1: Pick Date & Time ===== -->
+                <div class="step-content active" id="step1">
+                    <div class="step-title">Pick a date and time</div>
+                    <div class="step-subtitle">Select a day, then choose an available time slot.</div>
+
+                    <!-- Date Picker -->
+                    <div class="date-picker-wrapper">
+                        <div class="scroll-hint">← Scroll for more dates →</div>
+                        <div class="date-picker" id="datePicker"></div>
+                    </div>
+
+                    <!-- Time Slots -->
+                    <div id="timeSlotsContainer">
+                        <div class="loading-overlay" id="slotsLoading" style="display:none;">
+                            <span class="spinner"></span> Loading available times...
+                        </div>
+                        <div id="timeSlots"></div>
+                    </div>
+
+                    <div style="margin-top:20px; display:flex; justify-content:flex-end;">
+                        <button class="btn-primary" id="goToStep2" disabled>Continue →</button>
+                    </div>
+                </div>
+
+                <!-- ===== STEP 2: Your Details ===== -->
+                <div class="step-content" id="step2">
+                    <div class="step-title">Your details</div>
+                    <div class="step-subtitle">We'll send a confirmation to your email.</div>
+
+                    <div class="selected-slot-display" id="selectedSlotDisplay">
+                        <strong>Selected:</strong> <span id="selectedSlotText">—</span>
+                    </div>
+
+                    <form class="booking-form" id="bookingForm" novalidate>
+                        <div class="form-group">
+                            <label for="fullName">Full Name <span class="required">*</span></label>
+                            <input type="text" id="fullName" placeholder="e.g. Jane Smith" required />
+                            <div class="form-error" id="nameError">Please enter your full name.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">Email Address <span class="required">*</span></label>
+                            <input type="email" id="email" placeholder="jane@yourbusiness.com" required />
+                            <div class="form-error" id="emailError">Please enter a valid email address.</div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">Phone Number <span style="color:var(--text-muted);font-weight:400;">(optional)</span></label>
+                            <input type="tel" id="phone" placeholder="e.g. (555) 000-0000" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="service">Which service are you interested in? <span class="required">*</span></label>
+                            <select id="service" required>
+                                <option value="">Select a service...</option>
+                                <option value="Website">Website Design & Development</option>
+                                <option value="AI Receptionist">AI Receptionist Setup</option>
+                                <option value="NFC Cards">NFC Google Review Cards</option>
+                                <option value="Full Care Plan">Full Care Plan</option>
+                                <option value="Not sure yet">Not sure yet — just exploring</option>
+                            </select>
+                            <div class="form-error" id="serviceError">Please select a service.</div>
+                        </div>
+
+                        <div class="form-actions">
+                            <button type="button" class="btn-secondary" id="backToStep1">← Back</button>
+                            <button type="submit" class="btn-primary" id="confirmBooking" disabled>Confirm Booking</button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- ===== STEP 3: Confirmation ===== -->
+                <div class="step-content" id="step3">
+                    <div class="confirmation">
+                        <div class="checkmark">✓</div>
+                        <h3>Booking Confirmed!</h3>
+                        <p>We've received your booking. A confirmation email is on its way.</p>
+                        <div class="booking-details" id="confirmationDetails">
+                            <p><strong>Date &amp; Time:</strong> <span id="confirmDateTime">—</span></p>
+                            <p><strong>Name:</strong> <span id="confirmName">—</span></p>
+                            <p><strong>Email:</strong> <span id="confirmEmail">—</span></p>
+                            <p><strong>Service:</strong> <span id="confirmService">—</span></p>
+                        </div>
+                        <p style="margin-top:12px; font-size:0.9rem; color:var(--text-muted);">
+                            We'll reach out shortly to confirm. See you soon!
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Trust bullets (mini) -->
+                <div class="trust-mini">
+                    <div class="trust-mini-item">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><path d="M12 8v4l3 3" /></svg>
+                        No pressure — just a conversation
+                    </div>
+                    <div class="trust-mini-item">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><polyline points="12 6 12 12 16 14" /></svg>
+                        15–30 minutes, on your schedule
+                    </div>
+                    <div class="trust-mini-item">
+                        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" /><line x1="12" y1="16" x2="12" y2="12" /><line x1="12" y1="8" x2="12.01" y2="8" /></svg>
+                        Get clear next steps, no matter what
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-brand">
+                    <img src="logo.svg" alt="Scalex" class="logo-img" width="130" height="40" />
+                    <p>Digital services for small businesses. Websites, AI, and review tools that help you grow.</p>
+                </div>
+                <div class="footer-links">
+                    <h5>Company</h5>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#process">Process</a></li>
+                        <li><a href="#pricing">Pricing</a></li>
+                    </ul>
+                </div>
+                <div class="footer-links">
+                    <h5>Connect</h5>
+                    <ul>
+                        <li><a href="mailto:info@scalex.ink">info@scalex.ink</a></li>
+                        <li><a href="tel:+18253952510">(825) 395-2510</a></li>
+                    </ul>
+                    <div class="footer-social">
+                        <a href="#" aria-label="LinkedIn">in</a>
+                        <a href="#" aria-label="Twitter">𝕏</a>
+                        <a href="#" aria-label="Instagram">ig</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <span>&copy; 2026 Scalex. All rights reserved.</span>
+                <span>Built with purpose.</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ===== SCRIPTS ===== -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ---- CONFIG ----
+            const API_BASE = 'https://YOUR-BACKEND-URL.vercel.app';
+            const AVAILABILITY_URL = API_BASE + '/api/availability';
+            const BOOK_URL = API_BASE + '/api/book';
+
+            // ---- STATE ----
+            let selectedDate = null;
+            let selectedSlot = null;
+            let availableSlots = [];
+            let isSubmitting = false;
+            let currentStep = 1;
+            let bookingData = {};
+
+            // ---- DOM REFS ----
+            const datePicker = document.getElementById('datePicker');
+            const timeSlotsEl = document.getElementById('timeSlots');
+            const slotsLoading = document.getElementById('slotsLoading');
+            const goToStep2Btn = document.getElementById('goToStep2');
+            const backToStep1Btn = document.getElementById('backToStep1');
+            const confirmBtn = document.getElementById('confirmBooking');
+            const bookingForm = document.getElementById('bookingForm');
+            const errorBanner = document.getElementById('errorBanner');
+
+            const step1 = document.getElementById('step1');
+            const step2 = document.getElementById('step2');
+            const step3 = document.getElementById('step3');
+
+            const dot1 = document.getElementById('stepDot1');
+            const dot2 = document.getElementById('stepDot2');
+            const dot3 = document.getElementById('stepDot3');
+            const line1 = document.getElementById('stepLine1');
+            const line2 = document.getElementById('stepLine2');
+            const label1 = document.getElementById('stepLabel1');
+            const label2 = document.getElementById('stepLabel2');
+            const label3 = document.getElementById('stepLabel3');
+
+            const selectedSlotText = document.getElementById('selectedSlotText');
+            const selectedSlotDisplay = document.getElementById('selectedSlotDisplay');
+
+            // ---- HELPERS ----
+            function formatDate(isoDate) {
+                const d = new Date(isoDate + 'T00:00:00');
+                return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+            }
+
+            function formatTime(isoString) {
+                const d = new Date(isoString);
+                return d.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+            }
+
+            function formatFullDateTime(isoString) {
+                const d = new Date(isoString);
+                return d.toLocaleString('en-US', {
+                    weekday: 'short',
+                    month: 'short',
+                    day: 'numeric',
+                    hour: 'numeric',
+                    minute: '2-digit',
+                    timeZoneName: 'short'
+                });
+            }
+
+            function getWeekdaysOnly(startDate, count) {
+                const dates = [];
+                let d = new Date(startDate);
+                d.setHours(0, 0, 0, 0);
+
+                // Move to next weekday if start is weekend
+                while (d.getDay() === 0 || d.getDay() === 6) {
+                    d.setDate(d.getDate() + 1);
+                }
+
+                while (dates.length < count) {
+                    const day = d.getDay();
+                    if (day !== 0 && day !== 6) {
+                        dates.push(new Date(d));
+                    }
+                    d.setDate(d.getDate() + 1);
+                }
+                return dates;
+            }
+
+            function getDateStr(date) {
+                const y = date.getFullYear();
+                const m = String(date.getMonth() + 1).padStart(2, '0');
+                const d = String(date.getDate()).padStart(2, '0');
+                return y + '-' + m + '-' + d;
+            }
+
+            function getDayName(date) {
+                return date.toLocaleDateString('en-US', { weekday: 'short' });
+            }
+
+            function getDayNumber(date) {
+                return date.getDate();
+            }
+
+            function showError(msg) {
+                errorBanner.textContent = msg || 'Something went wrong. Please try again.';
+                errorBanner.classList.add('visible');
+            }
+
+            function hideError() {
+                errorBanner.classList.remove('visible');
+            }
+
+            function setLoading(el, show) {
+                if (show) {
+                    el.style.display = 'flex';
+                } else {
+                    el.style.display = 'none';
+                }
+            }
+
+            // ---- DATE PICKER ----
+            function renderDatePicker() {
+                const today = new Date();
+                today.setHours(0, 0, 0, 0);
+                const dates = getWeekdaysOnly(today, 14);
+
+                datePicker.innerHTML = '';
+                dates.forEach((date, index) => {
+                    const dateStr = getDateStr(date);
+                    const btn = document.createElement('button');
+                    btn.className = 'date-btn';
+                    btn.dataset.date = dateStr;
+                    btn.innerHTML = `
+                        <span class="day-name">${getDayName(date)}</span>
+                        <span class="day-number">${getDayNumber(date)}</span>
+                    `;
+                    btn.addEventListener('click', function() {
+                        selectDate(dateStr);
+                    });
+                    datePicker.appendChild(btn);
+
+                    // Auto-select first date
+                    if (index === 0) {
+                        setTimeout(() => {
+                            btn.classList.add('selected');
+                            selectedDate = dateStr;
+                            fetchSlots(dateStr);
+                        }, 100);
+                    }
+                });
+            }
+
+            function selectDate(dateStr) {
+                selectedDate = dateStr;
+                selectedSlot = null;
+                goToStep2Btn.disabled = true;
+
+                // Update UI
+                document.querySelectorAll('.date-btn').forEach(b => {
+                    b.classList.toggle('selected', b.dataset.date === dateStr);
+                });
+
+                fetchSlots(dateStr);
+            }
+
+            // ---- FETCH SLOTS ----
+            async function fetchSlots(dateStr) {
+                hideError();
+                setLoading(slotsLoading, true);
+                timeSlotsEl.innerHTML = '';
+
+                try {
+                    const url = AVAILABILITY_URL + '?date=' + dateStr;
+                    const response = await fetch(url);
+
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch availability (HTTP ' + response.status + ')');
+                    }
+
+                    const data = await response.json();
+                    availableSlots = data.slots || [];
+
+                    renderTimeSlots(availableSlots);
+
+                } catch (err) {
+                    console.error('Error fetching slots:', err);
+                    showError('Could not load available times. Please try again or select another date.');
+                    // Show mock data for demo if API is not available
+                    if (API_BASE.includes('YOUR-BACKEND-URL')) {
+                        const mockSlots = generateMockSlots(dateStr);
+                        availableSlots = mockSlots;
+                        renderTimeSlots(mockSlots);
+                        showError('Using mock data — replace YOUR-BACKEND-URL with your real API.');
+                    } else {
+                        timeSlotsEl.innerHTML = '<div class="no-slots">Unable to load times. Please try again.</div>';
+                    }
+                } finally {
+                    setLoading(slotsLoading, false);
+                }
+            }
+
+            // ---- MOCK DATA (for demo) ----
+            function generateMockSlots(dateStr) {
+                const slots = [];
+                const base = new Date(dateStr + 'T09:00:00');
+                for (let i = 0; i < 8; i++) {
+                    const t = new Date(base);
+                    t.setMinutes(t.getMinutes() + i * 30);
+                    // Skip 12-1 lunch break
+                    const hour = t.getHours();
+                    if (hour >= 12 && hour < 13) continue;
+                    slots.push(t.toISOString());
+                }
+                return slots;
+            }
+
+            // ---- RENDER TIME SLOTS ----
+            function renderTimeSlots(slots) {
+                timeSlotsEl.innerHTML = '';
+
+                if (!slots || slots.length === 0) {
+                    timeSlotsEl.innerHTML = '<div class="no-slots">No available times on this day. Please select another date.</div>';
+                    return;
+                }
+
+                const grid = document.createElement('div');
+                grid.className = 'time-slots';
+
+                slots.forEach(slot => {
+                    const btn = document.createElement('button');
+                    btn.className = 'time-btn';
+                    btn.textContent = formatTime(slot);
+                    btn.dataset.slot = slot;
+                    btn.addEventListener('click', function() {
+                        selectSlot(slot);
+                    });
+                    grid.appendChild(btn);
+                });
+
+                timeSlotsEl.appendChild(grid);
+            }
+
+            // ---- SELECT SLOT ----
+            function selectSlot(slot) {
+                selectedSlot = slot;
+                goToStep2Btn.disabled = false;
+
+                // Update UI
+                document.querySelectorAll('.time-btn').forEach(b => {
+                    b.classList.toggle('selected', b.dataset.slot === slot);
+                });
+            }
+
+            // ---- STEP NAVIGATION ----
+            function goToStep(step) {
+                currentStep = step;
+                hideError();
+
+                // Hide all steps
+                step1.classList.remove('active');
+                step2.classList.remove('active');
+                step3.classList.remove('active');
+
+                // Show target
+                if (step === 1) step1.classList.add('active');
+                else if (step === 2) step2.classList.add('active');
+                else if (step === 3) step3.classList.add('active');
+
+                // Update dots
+                dot1.className = 'step-dot' + (step === 1 ? ' active' : step > 1 ? ' done' : '');
+                dot2.className = 'step-dot' + (step === 2 ? ' active' : step > 2 ? ' done' : '');
+                dot3.className = 'step-dot' + (step === 3 ? ' active' : '');
+
+                line1.className = 'step-line' + (step > 1 ? ' done' : '');
+                line2.className = 'step-line' + (step > 2 ? ' done' : '');
+
+                label1.className = 'step-label' + (step === 1 ? ' active' : '');
+                label2.className = 'step-label' + (step === 2 ? ' active' : '');
+                label3.className = 'step-label' + (step === 3 ? ' active' : '');
+
+                // Update selected slot display in step 2
+                if (step === 2 && selectedSlot) {
+                    selectedSlotText.textContent = formatFullDateTime(selectedSlot);
+                    selectedSlotDisplay.style.display = 'block';
+                }
+
+                // Scroll to top of card
+                document.querySelector('.booking-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+
+            // ---- FORM VALIDATION ----
+            function validateForm() {
+                const name = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const service = document.getElementById('service').value;
+
+                let valid = true;
+
+                // Name
+                if (!name) {
+                    document.getElementById('nameError').classList.add('visible');
+                    document.getElementById('fullName').classList.add('error');
+                    valid = false;
+                } else {
+                    document.getElementById('nameError').classList.remove('visible');
+                    document.getElementById('fullName').classList.remove('error');
+                }
+
+                // Email
+                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                if (!email || !emailRegex.test(email)) {
+                    document.getElementById('emailError').classList.add('visible');
+                    document.getElementById('email').classList.add('error');
+                    valid = false;
+                } else {
+                    document.getElementById('emailError').classList.remove('visible');
+                    document.getElementById('email').classList.remove('error');
+                }
+
+                // Service
+                if (!service) {
+                    document.getElementById('serviceError').classList.add('visible');
+                    document.getElementById('service').classList.add('error');
+                    valid = false;
+                } else {
+                    document.getElementById('serviceError').classList.remove('visible');
+                    document.getElementById('service').classList.remove('error');
+                }
+
+                confirmBtn.disabled = !valid || !selectedSlot || isSubmitting;
+                return valid;
+            }
+
+            // ---- SUBMIT BOOKING ----
+            async function submitBooking(e) {
+                e.preventDefault();
+
+                if (!validateForm()) return;
+                if (!selectedSlot) {
+                    showError('Please select a time slot first.');
+                    return;
+                }
+
+                const name = document.getElementById('fullName').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const phone = document.getElementById('phone').value.trim();
+                const service = document.getElementById('service').value;
+
+                const payload = {
+                    name: name,
+                    email: email,
+                    phone: phone || null,
+                    service: service,
+                    startTime: selectedSlot
+                };
+
+                isSubmitting = true;
+                confirmBtn.disabled = true;
+                confirmBtn.innerHTML = '<span class="spinner" style="width:20px;height:20px;border-width:2px;"></span> Booking...';
+                hideError();
+
+                try {
+                    const response = await fetch(BOOK_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    if (!response.ok) {
+                        const errData = await response.json().catch(() => ({}));
+                        throw new Error(errData.message || 'Booking failed (HTTP ' + response.status + ')');
+                    }
+
+                    const data = await response.json();
+
+                    if (data.success) {
+                        // Show confirmation
+                        document.getElementById('confirmDateTime').textContent = formatFullDateTime(selectedSlot);
+                        document.getElementById('confirmName').textContent = name;
+                        document.getElementById('confirmEmail').textContent = email;
+                        document.getElementById('confirmService').textContent = service;
+                        goToStep(3);
+                    } else {
+                        throw new Error(data.message || 'Booking failed. Please try again.');
+                    }
+
+                } catch (err) {
+                    console.error('Booking error:', err);
+                    showError(err.message || 'Something went wrong. Please try again.');
+                    // If using mock, simulate success
+                    if (API_BASE.includes('YOUR-BACKEND-URL')) {
+                        document.getElementById('confirmDateTime').textContent = formatFullDateTime(selectedSlot);
+                        document.getElementById('confirmName').textContent = name;
+                        document.getElementById('confirmEmail').textContent = email;
+                        document.getElementById('confirmService').textContent = service;
+                        goToStep(3);
+                        showError('Using mock data — replace YOUR-BACKEND-URL with your real API.');
+                    }
+                } finally {
+                    isSubmitting = false;
+                    confirmBtn.disabled = false;
+                    confirmBtn.innerHTML = 'Confirm Booking';
+                }
+            }
+
+            // ---- EVENT LISTENERS ----
+            goToStep2Btn.addEventListener('click', function() {
+                if (selectedSlot) {
+                    goToStep(2);
+                }
+            });
+
+            backToStep1Btn.addEventListener('click', function() {
+                goToStep(1);
+            });
+
+            // Real-time validation
+            document.getElementById('fullName').addEventListener('input', validateForm);
+            document.getElementById('email').addEventListener('input', validateForm);
+            document.getElementById('service').addEventListener('change', validateForm);
+
+            bookingForm.addEventListener('submit', submitBooking);
+
+            // ---- THEME TOGGLE ----
+            const themeToggle = document.getElementById('themeToggle');
+            const toggleDot = document.getElementById('toggleDot');
+            const html = document.documentElement;
+
+            const hour = new Date().getHours();
+            const isNightTime = hour >= 18 || hour < 6;
+            const storedTheme = localStorage.getItem('scalex-theme');
+            let currentTheme = storedTheme || (isNightTime ? 'dark' : 'light');
+
+            function setTheme(theme) {
+                currentTheme = theme;
+                html.setAttribute('data-theme', theme);
+                localStorage.setItem('scalex-theme', theme);
+
+                const icons = themeToggle.querySelectorAll('.toggle-icon');
+                if (toggleDot) {
+                    if (theme === 'dark') {
+                        toggleDot.classList.add('dark');
+                        icons.forEach(icon => icon.classList.remove('active'));
+                        document.querySelector('.toggle-icon.moon')?.classList.add('active');
+                    } else {
+                        toggleDot.classList.remove('dark');
+                        icons.forEach(icon => icon.classList.remove('active'));
+                        document.querySelector('.toggle-icon.sun')?.classList.add('active');
+                    }
+                }
+            }
+
+            setTheme(currentTheme);
+
+            themeToggle.addEventListener('click', function() {
+                setTheme(currentTheme === 'light' ? 'dark' : 'light');
+            });
+
+            // ---- HAMBURGER ----
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            let menuOpen = false;
+
+            function toggleMenu(open) {
+                menuOpen = (open !== undefined) ? open : !menuOpen;
+                hamburger.classList.toggle('active', menuOpen);
+                mobileMenu.classList.toggle('open', menuOpen);
+                hamburger.setAttribute('aria-expanded', menuOpen);
+                document.body.style.overflow = menuOpen ? 'hidden' : '';
+            }
+
+            hamburger.addEventListener('click', function(e) {
+                e.stopPropagation();
+                toggleMenu();
+            });
+
+            document.querySelectorAll('.mobile-link').forEach(function(link) {
+                link.addEventListener('click', function() {
+                    if (menuOpen) toggleMenu(false);
+                });
+            });
+
+            document.addEventListener('click', function(e) {
+                if (menuOpen && !mobileMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                    toggleMenu(false);
+                }
+            });
+
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && menuOpen) toggleMenu(false);
+            });
+
+            // ---- NAVBAR SCROLL ----
+            const navbar = document.getElementById('navbar');
+
+            function handleScroll() {
+                const currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+                if (currentScroll > 20) {
+                    navbar.classList.add('scrolled');
+                } else {
+                    navbar.classList.remove('scrolled');
+                }
+            }
+
+            let ticking = false;
+            window.addEventListener('scroll', function() {
+                if (!ticking) {
+                    window.requestAnimationFrame(function() {
+                        handleScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            }, { passive: true });
+
+            handleScroll();
+
+            // ---- SCROLL REVEAL ----
+            const revealElements = document.querySelectorAll('.reveal');
+            if (revealElements.length) {
+                const observer = new IntersectionObserver(function(entries) {
+                    entries.forEach(function(entry) {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('visible');
+                        }
+                    });
+                }, {
+                    root: null,
+                    rootMargin: '0px 0px -60px 0px',
+                    threshold: 0.1
+                });
+                revealElements.forEach(function(el) {
+                    observer.observe(el);
+                });
+            }
+
+            // ---- INIT ----
+            renderDatePicker();
+
+            // Set initial step
+            goToStep(1);
+
+        })();
+    </script>
+
+</body>
+</html>

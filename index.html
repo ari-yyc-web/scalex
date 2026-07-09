@@ -21,7 +21,6 @@
         }
 
         :root {
-            /* Light theme (default) */
             --bg-primary: #ffffff;
             --bg-secondary: #f5f5f5;
             --bg-card: #ffffff;
@@ -106,7 +105,6 @@
             transition: background var(--transition), color var(--transition);
         }
 
-        /* ===== UTILITY ===== */
         .container {
             width: 100%;
             max-width: 1200px;
@@ -118,23 +116,8 @@
             padding: 80px 0;
         }
 
-        .section-padding-sm {
-            padding: 60px 0;
-        }
-
         .text-center {
             text-align: center;
-        }
-
-        .sr-only {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            padding: 0;
-            margin: -1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            border: 0;
         }
 
         /* ===== SCROLL ANIMATIONS ===== */
@@ -208,7 +191,6 @@
             height: 68px;
         }
 
-        /* ---- Logo (external SVG) ---- */
         .logo-link {
             display: flex;
             align-items: center;
@@ -226,7 +208,6 @@
             transition: filter var(--transition);
         }
 
-        /* ---- Nav links (desktop) — REDESIGNED ---- */
         .nav-links {
             display: none;
             list-style: none;
@@ -243,7 +224,6 @@
             padding: 8px 18px;
             border-radius: var(--radius);
             transition: all var(--transition);
-            position: relative;
             min-height: 44px;
             display: inline-flex;
             align-items: center;
@@ -254,7 +234,6 @@
             background: var(--bg-secondary);
         }
 
-        /* ---- Nav CTA (desktop) ---- */
         .nav-cta {
             background: var(--btn-primary-bg);
             color: var(--btn-primary-text) !important;
@@ -276,7 +255,6 @@
             color: var(--btn-primary-text) !important;
         }
 
-        /* ---- Theme toggle ---- */
         .theme-toggle {
             background: transparent;
             border: none;
@@ -337,7 +315,6 @@
             opacity: 1;
         }
 
-        /* ---- Hamburger (mobile) ---- */
         .hamburger {
             display: flex;
             flex-direction: column;
@@ -376,7 +353,6 @@
             transform: translateY(-7px) rotate(-45deg);
         }
 
-        /* ---- Mobile menu ---- */
         .mobile-menu {
             position: fixed;
             top: 68px;
@@ -712,7 +688,6 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* Header: icon + title + toggle on same line */
         .service-header {
             display: flex;
             align-items: center;
@@ -782,7 +757,6 @@
             transform: rotate(45deg);
         }
 
-        /* Body: hidden by default, expands on active */
         .service-body {
             display: grid;
             grid-template-rows: 0fr;
@@ -898,11 +872,6 @@
             transition: border-color var(--transition);
         }
 
-        .about-content .about-list li span {
-            color: var(--text-muted);
-            font-weight: 400;
-        }
-
         .about-content .about-list li::before {
             content: '✓';
             color: var(--text-primary);
@@ -939,7 +908,6 @@
             box-shadow: var(--shadow-sm);
         }
 
-        /* Header: number + title + toggle on same line */
         .process-header {
             display: flex;
             align-items: center;
@@ -1003,7 +971,6 @@
             transform: rotate(45deg);
         }
 
-        /* Body: hidden by default, expands on active */
         .process-body {
             display: grid;
             grid-template-rows: 0fr;
@@ -1114,7 +1081,6 @@
             text-align: center;
             box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
             width: 100%;
-            text-align: center;
         }
 
         .pricing-btn:hover {
@@ -1124,7 +1090,6 @@
             color: var(--btn-primary-text);
         }
 
-        /* Mobile toggle for pricing bullets */
         .pricing-details-toggle {
             display: none;
             background: none;
@@ -1153,8 +1118,6 @@
         .pricing-card.featured {
             background: var(--hero-bg);
             border-color: var(--border-hover);
-            position: relative;
-            margin-top: 8px;
         }
 
         .pricing-card.featured .pricing-header h3,
@@ -1170,15 +1133,6 @@
             color: var(--hero-sub);
         }
 
-        .pricing-card.featured .pricing-btn {
-            background: var(--btn-primary-bg);
-            color: var(--btn-primary-text);
-        }
-
-        .pricing-card.featured .pricing-btn:hover {
-            background: var(--btn-primary-hover);
-        }
-
         .featured-badge {
             display: inline-block;
             font-size: 0.65rem;
@@ -1190,6 +1144,44 @@
             background: var(--btn-primary-bg);
             color: var(--btn-primary-text);
             margin-bottom: 12px;
+        }
+
+        .featured-content {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .featured-left {
+            flex: 1;
+        }
+
+        .featured-right {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+        }
+
+        .featured-btn {
+            width: auto;
+            min-width: 160px;
+            padding: 12px 32px;
+            background: var(--btn-primary-bg);
+            color: var(--btn-primary-text);
+            font-size: 1rem;
+            font-weight: 600;
+            border-radius: var(--radius);
+            text-decoration: none;
+            text-align: center;
+            transition: all var(--transition);
+            box-shadow: 0 2px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        .featured-btn:hover {
+            background: var(--btn-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(0, 0, 0, 0.15);
+            color: var(--btn-primary-text);
         }
 
         /* ===== TESTIMONIALS ===== */
@@ -1440,10 +1432,6 @@
                 padding: 100px 0;
             }
 
-            .section-padding-sm {
-                padding: 80px 0;
-            }
-
             .container {
                 padding: 0 40px;
             }
@@ -1499,14 +1487,48 @@
                 margin-left: 4px;
             }
 
+            /* Featured card desktop layout */
             .pricing-card.featured {
                 margin-top: 0;
                 grid-column: 1 / -1;
+                padding: 28px 32px;
+            }
+
+            .featured-content {
                 display: grid;
                 grid-template-columns: 2fr 1fr;
                 align-items: center;
-                padding: 28px 32px;
                 gap: 24px;
+            }
+
+            .featured-left {
+                display: flex;
+                flex-direction: column;
+                gap: 6px;
+            }
+
+            .featured-left .pricing-bullets {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 4px 24px;
+                margin: 4px 0 0 0;
+            }
+
+            .featured-left .pricing-bullets li {
+                font-size: 0.9rem;
+                padding-left: 16px;
+            }
+
+            .featured-right {
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+
+            .featured-btn {
+                min-width: 180px;
+                padding: 14px 36px;
+                font-size: 1.05rem;
             }
 
             .pricing-card.featured .pricing-header {
@@ -1517,13 +1539,16 @@
                 margin-bottom: 0;
             }
 
-            .pricing-card.featured .pricing-btn {
-                width: auto;
-                justify-self: end;
-            }
-
             .pricing-card.featured .pricing-body {
                 display: contents;
+            }
+
+            .pricing-details-toggle {
+                display: none !important;
+            }
+
+            .pricing-card .pricing-body {
+                display: block !important;
             }
         }
 
@@ -1544,7 +1569,7 @@
                 gap: 6px;
             }
 
-            .pricing-card.featured {
+            .featured-content {
                 grid-template-columns: 2.5fr 1fr;
             }
         }
@@ -1567,7 +1592,7 @@
                 gap: 8px;
             }
 
-            .pricing-card.featured {
+            .featured-content {
                 grid-template-columns: 3fr 1fr;
             }
         }
@@ -1630,9 +1655,28 @@
             .pricing-price {
                 font-size: 1.2rem;
             }
+
+            .featured-btn {
+                width: 100%;
+                min-width: auto;
+                padding: 12px 20px;
+                font-size: 0.95rem;
+            }
+
+            .featured-content {
+                gap: 12px;
+            }
+
+            .featured-right {
+                justify-content: stretch;
+            }
+
+            .pricing-card.featured .featured-left .pricing-bullets {
+                display: flex;
+            }
         }
 
-        /* Touch-friendly: ensure interactive elements ≥44px */
+        /* Touch-friendly */
         button,
         .btn-primary,
         .btn-secondary,
@@ -1644,7 +1688,8 @@
         .theme-toggle,
         .logo-link,
         .pricing-btn,
-        .pricing-details-toggle {
+        .pricing-details-toggle,
+        .featured-btn {
             min-height: 44px;
             min-width: 44px;
         }
@@ -1688,9 +1733,6 @@
                 background: white;
                 color: black;
                 box-shadow: none;
-            }
-            .service-card::before {
-                display: none;
             }
             #cta {
                 background: #f5f5f5;
@@ -1743,18 +1785,6 @@
             .nav-cta {
                 display: inline-flex !important;
             }
-            .service-card:hover {
-                transform: none !important;
-                box-shadow: none !important;
-            }
-            .process-step:hover {
-                transform: none !important;
-                box-shadow: none !important;
-            }
-            .testimonial-card:hover {
-                transform: none !important;
-                box-shadow: none !important;
-            }
             .theme-toggle {
                 display: none !important;
             }
@@ -1784,6 +1814,16 @@
             .pricing-card.featured .pricing-body {
                 display: block !important;
             }
+            .featured-content {
+                display: block !important;
+            }
+            .featured-right {
+                display: block !important;
+                margin-top: 16px;
+            }
+            .featured-btn {
+                width: auto !important;
+            }
         }
     </style>
 </head>
@@ -1792,12 +1832,10 @@
     <!-- ===== NAVBAR ===== -->
     <header class="navbar" id="navbar" role="banner">
         <div class="container">
-            <!-- Logo -->
             <a href="#" class="logo-link" aria-label="Scalex home">
                 <img src="logo.svg" alt="Scalex" class="logo-img" width="130" height="40" />
             </a>
 
-            <!-- Desktop nav — redesigned -->
             <nav class="nav-links" aria-label="Main navigation">
                 <a href="#services">Services</a>
                 <a href="#about">About</a>
@@ -1807,11 +1845,9 @@
                 <a href="#cta" class="nav-cta">Get Started</a>
             </nav>
 
-            <!-- Theme toggle + hamburger -->
             <div style="display:flex; align-items:center; gap:8px;">
                 <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark/light mode" title="Toggle theme">
                     <span class="toggle-track">
-                        <!-- Sun Icon -->
                         <svg class="toggle-icon sun active" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <circle cx="12" cy="12" r="5" />
                             <line x1="12" y1="1" x2="12" y2="3" />
@@ -1823,7 +1859,6 @@
                             <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
                             <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
                         </svg>
-                        <!-- Moon Icon -->
                         <svg class="toggle-icon moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
                         </svg>
@@ -1904,7 +1939,6 @@
             </div>
 
             <div class="services-grid">
-                <!-- Card 1: Website Design -->
                 <div class="service-card reveal" style="transition-delay: 0.05s;">
                     <div class="service-header" role="button" tabindex="0" aria-expanded="false">
                         <div class="service-icon" aria-hidden="true">
@@ -1932,7 +1966,6 @@
                     </div>
                 </div>
 
-                <!-- Card 2: AI Receptionist -->
                 <div class="service-card reveal" style="transition-delay: 0.15s;">
                     <div class="service-header" role="button" tabindex="0" aria-expanded="false">
                         <div class="service-icon" aria-hidden="true">
@@ -1958,7 +1991,6 @@
                     </div>
                 </div>
 
-                <!-- Card 3: NFC Review Cards -->
                 <div class="service-card reveal" style="transition-delay: 0.25s;">
                     <div class="service-header" role="button" tabindex="0" aria-expanded="false">
                         <div class="service-icon" aria-hidden="true">
@@ -1986,7 +2018,6 @@
                     </div>
                 </div>
 
-                <!-- Card 4: Social Media Management -->
                 <div class="service-card reveal" style="transition-delay: 0.35s;">
                     <div class="service-header" role="button" tabindex="0" aria-expanded="false">
                         <div class="service-icon" aria-hidden="true">
@@ -2020,7 +2051,6 @@
                     </div>
                 </div>
 
-                <!-- Card 5: Google SEO -->
                 <div class="service-card reveal" style="transition-delay: 0.45s;">
                     <div class="service-header" role="button" tabindex="0" aria-expanded="false">
                         <div class="service-icon" aria-hidden="true">
@@ -2092,7 +2122,6 @@
             </div>
 
             <div class="process-grid">
-                <!-- Step 1 -->
                 <div class="process-step reveal" style="transition-delay: 0.05s;">
                     <div class="process-header" role="button" tabindex="0" aria-expanded="false">
                         <span class="process-number">1</span>
@@ -2111,7 +2140,6 @@
                     </div>
                 </div>
 
-                <!-- Step 2 -->
                 <div class="process-step reveal" style="transition-delay: 0.15s;">
                     <div class="process-header" role="button" tabindex="0" aria-expanded="false">
                         <span class="process-number">2</span>
@@ -2130,7 +2158,6 @@
                     </div>
                 </div>
 
-                <!-- Step 3 -->
                 <div class="process-step reveal" style="transition-delay: 0.25s;">
                     <div class="process-header" role="button" tabindex="0" aria-expanded="false">
                         <span class="process-number">3</span>
@@ -2149,7 +2176,6 @@
                     </div>
                 </div>
 
-                <!-- Step 4 -->
                 <div class="process-step reveal" style="transition-delay: 0.35s;">
                     <div class="process-header" role="button" tabindex="0" aria-expanded="false">
                         <span class="process-number">4</span>
@@ -2172,96 +2198,96 @@
     </section>
 
     <!-- ===== PRICING ===== -->
-<section class="section-padding" id="pricing">
-    <div class="container">
-        <div class="text-center reveal">
-            <span class="section-label">Pricing</span>
-            <h2 class="section-title">Simple, Transparent Pricing</h2>
-            <p class="section-sub centered">
-                Straightforward pricing for every stage of your business — no hidden fees, no surprises.
-            </p>
-        </div>
-
-        <div class="pricing-grid">
-            <!-- Card 1: Website Design -->
-            <div class="pricing-card reveal" style="transition-delay: 0.05s;">
-                <div class="pricing-header">
-                    <h3>Website Design &amp; Development</h3>
-                    <div class="pricing-price">Starting at $XXX</div>
-                </div>
-                <button class="pricing-details-toggle" aria-expanded="false">See what's included</button>
-                <div class="pricing-body">
-                    <ul class="pricing-bullets">
-                        <li>Mobile-first, fast-loading design</li>
-                        <li>SEO-optimized structure</li>
-                        <li>Custom to your brand</li>
-                        <li>One round of revisions included</li>
-                    </ul>
-                    <a href="#" class="pricing-btn">Get Started</a>
-                </div>
+    <section class="section-padding" id="pricing">
+        <div class="container">
+            <div class="text-center reveal">
+                <span class="section-label">Pricing</span>
+                <h2 class="section-title">Simple, Transparent Pricing</h2>
+                <p class="section-sub centered">
+                    Straightforward pricing for every stage of your business — no hidden fees, no surprises.
+                </p>
             </div>
 
-            <!-- Card 2: AI Receptionist -->
-            <div class="pricing-card reveal" style="transition-delay: 0.15s;">
-                <div class="pricing-header">
-                    <h3>AI Receptionist Setup</h3>
-                    <div class="pricing-price">Starting at $XXX/mo</div>
-                </div>
-                <button class="pricing-details-toggle" aria-expanded="false">See what's included</button>
-                <div class="pricing-body">
-                    <ul class="pricing-bullets">
-                        <li>Answers calls 24/7</li>
-                        <li>Books appointments automatically</li>
-                        <li>Custom AI persona for your business</li>
-                        <li>Ongoing support included</li>
-                    </ul>
-                    <a href="#" class="pricing-btn">Get Started</a>
-                </div>
-            </div>
-
-            <!-- Card 3: NFC Review Cards -->
-            <div class="pricing-card reveal" style="transition-delay: 0.25s;">
-                <div class="pricing-header">
-                    <h3>NFC Google Review Cards</h3>
-                    <div class="pricing-price">Starting at $XXX</div>
-                </div>
-                <button class="pricing-details-toggle" aria-expanded="false">See what's included</button>
-                <div class="pricing-body">
-                    <ul class="pricing-bullets">
-                        <li>Tap-to-review, no app needed</li>
-                        <li>Custom branded card design</li>
-                        <li>Unlimited taps, no monthly fee</li>
-                        <li>Free setup and activation</li>
-                    </ul>
-                    <a href="#" class="pricing-btn">Get Started</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Featured Card 4: Full Care Plan (FIXED) -->
-        <div class="pricing-card featured reveal" style="transition-delay: 0.35s; margin-top: 24px;">
-            <div class="featured-content">
-                <div class="featured-left">
-                    <span class="featured-badge">Most Popular</span>
+            <div class="pricing-grid">
+                <!-- Card 1 -->
+                <div class="pricing-card reveal" style="transition-delay: 0.05s;">
                     <div class="pricing-header">
-                        <h3>Full Care Plan</h3>
-                        <div class="pricing-price">Custom pricing — book a free call</div>
+                        <h3>Website Design &amp; Development</h3>
+                        <div class="pricing-price">Starting at $XXX</div>
                     </div>
-                    <ul class="pricing-bullets">
-                        <li>Website + AI Receptionist + Review Cards bundled</li>
-                        <li>Priority support</li>
-                        <li>Monthly performance check-ins</li>
-                        <li>Cancel anytime</li>
-                    </ul>
+                    <button class="pricing-details-toggle" aria-expanded="false">See what's included</button>
+                    <div class="pricing-body">
+                        <ul class="pricing-bullets">
+                            <li>Mobile-first, fast-loading design</li>
+                            <li>SEO-optimized structure</li>
+                            <li>Custom to your brand</li>
+                            <li>One round of revisions included</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">Get Started</a>
+                    </div>
                 </div>
-                <div class="featured-right">
-                    <a href="#cta" class="pricing-btn featured-btn">Book a Call</a>
+
+                <!-- Card 2 -->
+                <div class="pricing-card reveal" style="transition-delay: 0.15s;">
+                    <div class="pricing-header">
+                        <h3>AI Receptionist Setup</h3>
+                        <div class="pricing-price">Starting at $XXX/mo</div>
+                    </div>
+                    <button class="pricing-details-toggle" aria-expanded="false">See what's included</button>
+                    <div class="pricing-body">
+                        <ul class="pricing-bullets">
+                            <li>Answers calls 24/7</li>
+                            <li>Books appointments automatically</li>
+                            <li>Custom AI persona for your business</li>
+                            <li>Ongoing support included</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">Get Started</a>
+                    </div>
+                </div>
+
+                <!-- Card 3 -->
+                <div class="pricing-card reveal" style="transition-delay: 0.25s;">
+                    <div class="pricing-header">
+                        <h3>NFC Google Review Cards</h3>
+                        <div class="pricing-price">Starting at $XXX</div>
+                    </div>
+                    <button class="pricing-details-toggle" aria-expanded="false">See what's included</button>
+                    <div class="pricing-body">
+                        <ul class="pricing-bullets">
+                            <li>Tap-to-review, no app needed</li>
+                            <li>Custom branded card design</li>
+                            <li>Unlimited taps, no monthly fee</li>
+                            <li>Free setup and activation</li>
+                        </ul>
+                        <a href="#" class="pricing-btn">Get Started</a>
+                    </div>
                 </div>
             </div>
-            <button class="pricing-details-toggle" aria-expanded="false" style="display: none;">See what's included</button>
+
+            <!-- Featured Card 4: Full Care Plan (FIXED) -->
+            <div class="pricing-card featured reveal" style="transition-delay: 0.35s; margin-top: 24px;">
+                <div class="featured-content">
+                    <div class="featured-left">
+                        <span class="featured-badge">Most Popular</span>
+                        <div class="pricing-header">
+                            <h3>Full Care Plan</h3>
+                            <div class="pricing-price">Custom pricing — book a free call</div>
+                        </div>
+                        <ul class="pricing-bullets">
+                            <li>Website + AI Receptionist + Review Cards bundled</li>
+                            <li>Priority support</li>
+                            <li>Monthly performance check-ins</li>
+                            <li>Cancel anytime</li>
+                        </ul>
+                    </div>
+                    <div class="featured-right">
+                        <a href="#cta" class="featured-btn">Book a Call</a>
+                    </div>
+                </div>
+                <button class="pricing-details-toggle" aria-expanded="false" style="display: none;">See what's included</button>
+            </div>
         </div>
-    </div>
-</section>
+    </section>
 
     <!-- ===== TESTIMONIALS ===== -->
     <section class="section-padding" id="testimonials">
@@ -2383,11 +2409,9 @@
             const toggleDot = document.getElementById('toggleDot');
             const html = document.documentElement;
 
-            // Auto dark mode: after 6 PM or before 6 AM
             const hour = new Date().getHours();
             const isNightTime = hour >= 18 || hour < 6;
 
-            // Check for stored preference, else use time-based logic
             const storedTheme = localStorage.getItem('scalex-theme');
             let currentTheme = storedTheme || (isNightTime ? 'dark' : 'light');
 
@@ -2396,7 +2420,6 @@
                 html.setAttribute('data-theme', theme);
                 localStorage.setItem('scalex-theme', theme);
 
-                // Update toggle UI
                 const icons = themeToggle.querySelectorAll('.toggle-icon');
                 if (toggleDot) {
                     if (theme === 'dark') {
@@ -2555,7 +2578,6 @@
                     if (!parent) return;
 
                     const isActive = parent.classList.contains('active');
-                    const body = parent.querySelector('.pricing-body');
 
                     if (isActive) {
                         parent.classList.remove('active');
@@ -2575,27 +2597,6 @@
                     }
                 });
             });
-
-            // Ensure featured card toggle is hidden on desktop, visible on mobile
-            const featuredCard = document.querySelector('.pricing-card.featured');
-            if (featuredCard) {
-                const toggle = featuredCard.querySelector('.pricing-details-toggle');
-                if (toggle) {
-                    const mediaQuery = window.matchMedia('(max-width: 767px)');
-                    function handleToggleVisibility(e) {
-                        if (e.matches) {
-                            toggle.style.display = 'inline-block';
-                        } else {
-                            toggle.style.display = 'none';
-                            featuredCard.classList.remove('active');
-                            toggle.textContent = 'See what\'s included';
-                            toggle.setAttribute('aria-expanded', 'false');
-                        }
-                    }
-                    mediaQuery.addListener(handleToggleVisibility);
-                    handleToggleVisibility(mediaQuery);
-                }
-            }
 
         })();
     </script>

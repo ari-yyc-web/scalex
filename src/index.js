@@ -158,49 +158,51 @@ async function handleBook(request, env) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="light" />
 <meta name="supported-color-schemes" content="light" />
-<style>
-  :root { color-scheme: light; supported-color-schemes: light; }
-  body { background: #ffffff !important; }
-</style>
 </head>
-<body style="background: #ffffff; margin: 0; padding: 0;">
-        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; background: #ffffff;">
-          <div style="background: #0a0a0a; padding: 32px 24px; text-align: center;">
-            <h1 style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
-          </div>
-          <div style="padding: 32px 24px;">
-            <p style="font-size: 16px; color: #1a1a1a; line-height: 1.6;">
-              Your call with Scalex is confirmed. Here's what to expect:
-            </p>
-            <div style="background: #f5f5f5; border-radius: 8px; padding: 20px; margin: 20px 0;">
-              <p style="margin: 0 0 8px 0; font-size: 14px; color: #7a7a7a; text-transform: uppercase; letter-spacing: 0.5px;">Date &amp; Time</p>
-              <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
-                ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', weekday: 'long', month: 'long', day: 'numeric' })}
-              </p>
-              <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
-                ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', hour: 'numeric', minute: '2-digit' })} MT
-              </p>
-            </div>
-            <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6;">
-              We'll call you at <strong>${phone || 'the number you provided'}</strong> at that time — no need to dial in or click a link. Just be ready to chat for 15–30 minutes.
-            </p>
-            <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6;">
-              Need to reschedule or have a question before then? Just reply to this email or reach us at <a href="mailto:info@scalex.ink" style="color:#1a1a1a;">info@scalex.ink</a> or <a href="tel:+18253952510" style="color:#1a1a1a;">(825) 395-2510</a>.
-            </p>
-          </div>
-          <div style="background: #f5f5f5; padding: 24px; text-align: center; border-top: 1px solid #e8e8e8;">
-            <table role="presentation" align="center" cellpadding="0" cellspacing="0" style="margin: 0 auto;">
-              <tr>
-                <td bgcolor="#ffffff" style="background-color: #ffffff; border-radius: 8px; padding: 12px 20px;">
-                  <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 48px; display: block;" />
-                </td>
-              </tr>
-            </table>
-            <p style="color: #7a7a7a; font-size: 12px; margin: 12px 0 0 0;">
-              Digital services for small businesses.
-            </p>
-          </div>
-        </div>
+<body style="margin: 0; padding: 0;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #ffffff;">
+<tr><td align="center">
+<table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width: 480px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+  <tr>
+    <td bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 32px 24px; text-align: center;">
+      <h1 style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
+    </td>
+  </tr>
+  <tr>
+    <td style="padding: 32px 24px;">
+      <p style="font-size: 16px; color: #1a1a1a; line-height: 1.6;">
+        Your call with Scalex is confirmed. Here's what to expect:
+      </p>
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" style="background-color: #f5f5f5; border-radius: 8px;">
+        <tr><td style="padding: 20px;">
+          <p style="margin: 0 0 8px 0; font-size: 14px; color: #7a7a7a; text-transform: uppercase; letter-spacing: 0.5px;">Date &amp; Time</p>
+          <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+            ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', weekday: 'long', month: 'long', day: 'numeric' })}
+          </p>
+          <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+            ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', hour: 'numeric', minute: '2-digit' })} MT
+          </p>
+        </td></tr>
+      </table>
+      <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6; margin-top: 20px;">
+        We'll call you at <strong>${phone || 'the number you provided'}</strong> at that time — no need to dial in or click a link. Just be ready to chat for 15–30 minutes.
+      </p>
+      <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6;">
+        Need to reschedule or have a question before then? Just reply to this email or reach us at <a href="mailto:info@scalex.ink" style="color:#1a1a1a;">info@scalex.ink</a> or <a href="tel:+18253952510" style="color:#1a1a1a;">(825) 395-2510</a>.
+      </p>
+    </td>
+  </tr>
+  <tr>
+    <td bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 24px; text-align: center;">
+      <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 48px; display: block; margin: 0 auto;" />
+      <p style="color: #aaaaaa; font-size: 12px; margin: 12px 0 0 0;">
+        Digital services for small businesses.
+      </p>
+    </td>
+  </tr>
+</table>
+</td></tr>
+</table>
 </body>
 </html>`,
 

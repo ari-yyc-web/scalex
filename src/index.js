@@ -166,57 +166,58 @@ async function handleBook(request, env) {
   body { background: #ffffff !important; margin: 0; padding: 0; }
   .logo-text {
     font-family: 'Stack Sans Headline', 'Century Gothic', 'Futura', -apple-system, sans-serif;
-    font-size: 42px;
-    letter-spacing: 2px;
+    font-size: 56px;
+    letter-spacing: 3px;
     color: #ffffff;
     margin: 0;
   }
-  @media screen and (max-width: 480px) {
+  @media screen and (max-width: 600px) {
     .email-container { width: 100% !important; }
-    .header-title { font-size: 18px !important; }
-    .content-padding { padding: 24px 16px !important; }
-    .logo-text { font-size: 32px !important; }
-    .footer-padding { padding: 32px 16px !important; }
+    .header-title { font-size: 20px !important; }
+    .content-padding { padding: 28px 20px !important; }
+    .body-text { font-size: 15px !important; }
+    .logo-text { font-size: 38px !important; letter-spacing: 2px !important; }
+    .footer-padding { padding: 32px 20px !important; }
   }
 </style>
 </head>
 <body style="margin: 0; padding: 0;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #ffffff;">
 <tr><td align="center">
-<table role="presentation" class="email-container" width="480" cellpadding="0" cellspacing="0" style="max-width: 480px; width: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<table role="presentation" class="email-container" width="600" cellpadding="0" cellspacing="0" style="max-width: 600px; width: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <tr>
-    <td bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 32px 24px; text-align: center;">
-      <h1 class="header-title" style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
+    <td bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 40px 32px; text-align: center;">
+      <h1 class="header-title" style="color: #ffffff; font-size: 24px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
     </td>
   </tr>
   <tr>
-    <td class="content-padding" style="padding: 32px 24px;">
-      <p style="font-size: 16px; color: #1a1a1a; line-height: 1.6;">
+    <td class="content-padding" style="padding: 40px 32px;">
+      <p class="body-text" style="font-size: 17px; color: #1a1a1a; line-height: 1.6;">
         Your call with Scalex is confirmed. Here's what to expect:
       </p>
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" bgcolor="#f5f5f5" style="background-color: #f5f5f5; border-radius: 8px;">
-        <tr><td style="padding: 20px;">
+        <tr><td style="padding: 24px;">
           <p style="margin: 0 0 8px 0; font-size: 14px; color: #7a7a7a; text-transform: uppercase; letter-spacing: 0.5px;">Date &amp; Time</p>
-          <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+          <p style="margin: 0; font-size: 20px; font-weight: 700; color: #1a1a1a;">
             ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', weekday: 'long', month: 'long', day: 'numeric' })}
           </p>
-          <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+          <p style="margin: 4px 0 0 0; font-size: 20px; font-weight: 700; color: #1a1a1a;">
             ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', hour: 'numeric', minute: '2-digit' })} MT
           </p>
         </td></tr>
       </table>
-      <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6; margin-top: 20px;">
+      <p class="body-text" style="font-size: 17px; color: #5a5a5a; line-height: 1.6; margin-top: 24px;">
         We'll call you at <strong>${phone || 'the number you provided'}</strong> at that time — no need to dial in or click a link. Just be ready to chat for 15–30 minutes.
       </p>
-      <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6;">
+      <p class="body-text" style="font-size: 17px; color: #5a5a5a; line-height: 1.6;">
         Need to reschedule or have a question before then? Just reply to this email or reach us at <a href="mailto:info@scalex.ink" style="color:#1a1a1a;">info@scalex.ink</a> or <a href="tel:+18253952510" style="color:#1a1a1a;">(825) 395-2510</a>.
       </p>
     </td>
   </tr>
   <tr>
-    <td class="footer-padding" bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 40px 24px; text-align: center;">
+    <td class="footer-padding" bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 48px 32px; text-align: center;">
       <p class="logo-text">SCALEX</p>
-      <p style="color: #aaaaaa; font-size: 12px; margin: 12px 0 0 0;">
+      <p style="color: #aaaaaa; font-size: 13px; margin: 16px 0 0 0;">
         Digital services for small businesses.
       </p>
     </td>

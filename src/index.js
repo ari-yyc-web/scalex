@@ -158,6 +158,14 @@ async function handleBook(request, env) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="light" />
 <meta name="supported-color-schemes" content="light" />
+<style>
+  :root { color-scheme: light; supported-color-schemes: light; }
+  body { background: #ffffff !important; }
+  img { -ms-interpolation-mode: bicubic; }
+  @media (prefers-color-scheme: dark) {
+    img { filter: none !important; -webkit-filter: none !important; }
+  }
+</style>
 </head>
 <body style="margin: 0; padding: 0;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #ffffff;">

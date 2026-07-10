@@ -141,7 +141,13 @@ async function handleBook(request, env) {
   const eventData = await insertRes.json();
   if (!insertRes.ok) throw new Error(JSON.stringify(eventData));
 
-  body: JSON.stringify({
+  await fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${env.RESEND_API_KEY}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
       from: 'Scalex <bookings@scalex.ink>',
       to: email,
       subject: `You're booked — ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', dateStyle: 'long', timeStyle: 'short' })}`,

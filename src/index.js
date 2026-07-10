@@ -206,6 +206,9 @@ async function handleBook(request, env) {
 </body>
 </html>`,
 
+    }),
+  });
+
   return new Response(JSON.stringify({ success: true, eventId: eventData.id }), {
     status: 200,
     headers: { ...corsHeaders, 'Content-Type': 'application/json' },

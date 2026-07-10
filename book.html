@@ -668,6 +668,83 @@
             font-size: 0.95rem;
         }
 
+        /* ---- Service Checklist (Multi-select) ---- */
+        .service-checklist {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 4px;
+        }
+
+        .service-option {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            border: 2px solid var(--border-color);
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all var(--transition);
+            background: var(--bg-card);
+            color: var(--text-secondary);
+            font-weight: 500;
+            font-size: 0.95rem;
+            min-height: 48px;
+        }
+
+        .service-option:hover {
+            border-color: var(--border-hover);
+            background: var(--bg-secondary);
+        }
+
+        .service-option input[type="checkbox"] {
+            display: none;
+        }
+
+        .service-option .checkmark {
+            width: 20px;
+            height: 20px;
+            border-radius: 4px;
+            border: 2px solid var(--border-color);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all var(--transition);
+            background: var(--bg-primary);
+            font-size: 14px;
+            color: var(--bg-primary);
+        }
+
+        .service-option:has(input:checked) {
+            border-color: var(--text-primary);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+        }
+
+        .service-option:has(input:checked) .checkmark {
+            border-color: var(--text-primary);
+            background: var(--text-primary);
+            color: var(--bg-primary);
+        }
+
+        .service-option:has(input:checked) .checkmark::after {
+            content: "✓";
+            transform: scale(1);
+            color: var(--bg-primary);
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .service-option .checkmark::after {
+            content: "";
+            transition: transform 0.2s ease;
+            transform: scale(0);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         /* ---- Form ---- */
         .booking-form {
             display: flex;
@@ -1026,6 +1103,75 @@
         }
 
         /* ===== RESPONSIVE ===== */
+        @media (max-width: 480px) {
+            .service-checklist {
+                grid-template-columns: 1fr;
+            }
+
+            .service-option {
+                padding: 10px 14px;
+                min-height: 44px;
+                font-size: 0.9rem;
+            }
+
+            .date-picker-wrapper .scroll-hint {
+                display: block;
+            }
+
+            .date-btn {
+                min-width: 62px;
+                padding: 10px 14px;
+                min-height: 52px;
+            }
+
+            .date-btn .day-number {
+                font-size: 0.95rem;
+            }
+
+            .time-slots {
+                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+                gap: 8px;
+            }
+
+            .time-btn {
+                padding: 10px 12px;
+                font-size: 0.8rem;
+                min-height: 42px;
+            }
+
+            .booking-card {
+                padding: 20px 16px;
+            }
+
+            .step-indicator {
+                gap: 8px;
+            }
+
+            .step-dot {
+                width: 28px;
+                height: 28px;
+                font-size: 0.7rem;
+            }
+
+            .step-label {
+                font-size: 0.65rem;
+            }
+
+            .step-line {
+                max-width: 30px;
+            }
+
+            .form-actions {
+                flex-direction: column;
+            }
+
+            .form-actions .btn-primary,
+            .form-actions .btn-secondary {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+
         @media (min-width: 640px) {
             .footer-grid {
                 grid-template-columns: 2fr 1fr 1fr;
@@ -1091,6 +1237,10 @@
                 grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
                 gap: 12px;
             }
+
+            .service-checklist {
+                grid-template-columns: 1fr 1fr;
+            }
         }
 
         @media (min-width: 1024px) {
@@ -1115,75 +1265,12 @@
         }
 
         /* Mobile: date picker horizontal scroll hint */
-        .date-picker-wrapper {
-            position: relative;
-        }
-
         .date-picker-wrapper .scroll-hint {
             display: none;
             font-size: 0.75rem;
             color: var(--text-muted);
             text-align: center;
             margin-bottom: 8px;
-        }
-
-        @media (max-width: 480px) {
-            .date-picker-wrapper .scroll-hint {
-                display: block;
-            }
-
-            .date-btn {
-                min-width: 62px;
-                padding: 10px 14px;
-                min-height: 52px;
-            }
-
-            .date-btn .day-number {
-                font-size: 0.95rem;
-            }
-
-            .time-slots {
-                grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
-                gap: 8px;
-            }
-
-            .time-btn {
-                padding: 10px 12px;
-                font-size: 0.8rem;
-                min-height: 42px;
-            }
-
-            .booking-card {
-                padding: 20px 16px;
-            }
-
-            .step-indicator {
-                gap: 8px;
-            }
-
-            .step-dot {
-                width: 28px;
-                height: 28px;
-                font-size: 0.7rem;
-            }
-
-            .step-label {
-                font-size: 0.65rem;
-            }
-
-            .step-line {
-                max-width: 30px;
-            }
-
-            .form-actions {
-                flex-direction: column;
-            }
-
-            .form-actions .btn-primary,
-            .form-actions .btn-secondary {
-                width: 100%;
-                justify-content: center;
-            }
         }
 
         /* Touch-friendly */
@@ -1198,7 +1285,8 @@
         .date-btn,
         .time-btn,
         .btn-primary,
-        .btn-secondary {
+        .btn-secondary,
+        .service-option {
             min-height: 44px;
             min-width: 44px;
         }
@@ -1426,17 +1514,37 @@
                             <input type="tel" id="phone" placeholder="e.g. (555) 000-0000" />
                         </div>
 
+                        <!-- ===== UPDATED: Service Checklist (Multi-Select Checkboxes) ===== -->
                         <div class="form-group">
-                            <label for="service">Which service are you interested in? <span class="required">*</span></label>
-                            <select id="service" required>
-                                <option value="">Select a service...</option>
-                                <option value="Website">Website Design & Development</option>
-                                <option value="AI Receptionist">AI Receptionist Setup</option>
-                                <option value="NFC Cards">NFC Google Review Cards</option>
-                                <option value="Full Care Plan">Full Care Plan</option>
-                                <option value="Not sure yet">Not sure yet — just exploring</option>
-                            </select>
-                            <div class="form-error" id="serviceError">Please select a service.</div>
+                            <label>Which services are you interested in? <span class="required">*</span></label>
+                            <div class="service-checklist" id="serviceChecklist">
+                                <label class="service-option">
+                                    <input type="checkbox" name="service" value="Website Design &amp; Development" />
+                                    <span class="checkmark"></span>
+                                    Website Design &amp; Development
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="service" value="AI Receptionist Setup" />
+                                    <span class="checkmark"></span>
+                                    AI Receptionist Setup
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="service" value="NFC Google Review Cards" />
+                                    <span class="checkmark"></span>
+                                    NFC Google Review Cards
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="service" value="Full Care Plan" />
+                                    <span class="checkmark"></span>
+                                    Full Care Plan
+                                </label>
+                                <label class="service-option">
+                                    <input type="checkbox" name="service" value="Not sure yet — just exploring" />
+                                    <span class="checkmark"></span>
+                                    Not sure yet — just exploring
+                                </label>
+                            </div>
+                            <div class="form-error" id="serviceError">Please select at least one service.</div>
                         </div>
 
                         <div class="form-actions">
@@ -1456,7 +1564,7 @@
                             <p><strong>Date &amp; Time:</strong> <span id="confirmDateTime">—</span></p>
                             <p><strong>Name:</strong> <span id="confirmName">—</span></p>
                             <p><strong>Email:</strong> <span id="confirmEmail">—</span></p>
-                            <p><strong>Service:</strong> <span id="confirmService">—</span></p>
+                            <p><strong>Services:</strong> <span id="confirmService">—</span></p>
                         </div>
                         <p style="margin-top:12px; font-size:0.9rem; color:var(--text-muted);">
                             We'll reach out shortly to confirm. See you soon!
@@ -1527,7 +1635,7 @@
             'use strict';
 
             // ---- CONFIG ----
-            const API_BASE = 'https://YOUR-BACKEND-URL.vercel.app';
+            const API_BASE = 'https://scalex.pr0xy0021-pr.workers.dev';
             const AVAILABILITY_URL = API_BASE + '/api/availability';
             const BOOK_URL = API_BASE + '/api/book';
 
@@ -1593,7 +1701,6 @@
                 let d = new Date(startDate);
                 d.setHours(0, 0, 0, 0);
 
-                // Move to next weekday if start is weekend
                 while (d.getDay() === 0 || d.getDay() === 6) {
                     d.setDate(d.getDate() + 1);
                 }
@@ -1661,7 +1768,6 @@
                     });
                     datePicker.appendChild(btn);
 
-                    // Auto-select first date
                     if (index === 0) {
                         setTimeout(() => {
                             btn.classList.add('selected');
@@ -1677,7 +1783,6 @@
                 selectedSlot = null;
                 goToStep2Btn.disabled = true;
 
-                // Update UI
                 document.querySelectorAll('.date-btn').forEach(b => {
                     b.classList.toggle('selected', b.dataset.date === dateStr);
                 });
@@ -1707,7 +1812,6 @@
                 } catch (err) {
                     console.error('Error fetching slots:', err);
                     showError('Could not load available times. Please try again or select another date.');
-                    // Show mock data for demo if API is not available
                     if (API_BASE.includes('YOUR-BACKEND-URL')) {
                         const mockSlots = generateMockSlots(dateStr);
                         availableSlots = mockSlots;
@@ -1728,7 +1832,6 @@
                 for (let i = 0; i < 8; i++) {
                     const t = new Date(base);
                     t.setMinutes(t.getMinutes() + i * 30);
-                    // Skip 12-1 lunch break
                     const hour = t.getHours();
                     if (hour >= 12 && hour < 13) continue;
                     slots.push(t.toISOString());
@@ -1767,7 +1870,6 @@
                 selectedSlot = slot;
                 goToStep2Btn.disabled = false;
 
-                // Update UI
                 document.querySelectorAll('.time-btn').forEach(b => {
                     b.classList.toggle('selected', b.dataset.slot === slot);
                 });
@@ -1778,17 +1880,14 @@
                 currentStep = step;
                 hideError();
 
-                // Hide all steps
                 step1.classList.remove('active');
                 step2.classList.remove('active');
                 step3.classList.remove('active');
 
-                // Show target
                 if (step === 1) step1.classList.add('active');
                 else if (step === 2) step2.classList.add('active');
                 else if (step === 3) step3.classList.add('active');
 
-                // Update dots
                 dot1.className = 'step-dot' + (step === 1 ? ' active' : step > 1 ? ' done' : '');
                 dot2.className = 'step-dot' + (step === 2 ? ' active' : step > 2 ? ' done' : '');
                 dot3.className = 'step-dot' + (step === 3 ? ' active' : '');
@@ -1800,25 +1899,23 @@
                 label2.className = 'step-label' + (step === 2 ? ' active' : '');
                 label3.className = 'step-label' + (step === 3 ? ' active' : '');
 
-                // Update selected slot display in step 2
                 if (step === 2 && selectedSlot) {
                     selectedSlotText.textContent = formatFullDateTime(selectedSlot);
                     selectedSlotDisplay.style.display = 'block';
                 }
 
-                // Scroll to top of card
                 document.querySelector('.booking-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
             }
 
-            // ---- FORM VALIDATION ----
+            // ---- FORM VALIDATION (UPDATED for Checkboxes) ----
             function validateForm() {
                 const name = document.getElementById('fullName').value.trim();
                 const email = document.getElementById('email').value.trim();
-                const service = document.getElementById('service').value;
+                const serviceInputs = document.querySelectorAll('input[name="service"]:checked');
+                const serviceValues = Array.from(serviceInputs).map(el => el.value);
 
                 let valid = true;
 
-                // Name
                 if (!name) {
                     document.getElementById('nameError').classList.add('visible');
                     document.getElementById('fullName').classList.add('error');
@@ -1828,7 +1925,6 @@
                     document.getElementById('fullName').classList.remove('error');
                 }
 
-                // Email
                 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
                 if (!email || !emailRegex.test(email)) {
                     document.getElementById('emailError').classList.add('visible');
@@ -1839,21 +1935,18 @@
                     document.getElementById('email').classList.remove('error');
                 }
 
-                // Service
-                if (!service) {
+                if (serviceValues.length === 0) {
                     document.getElementById('serviceError').classList.add('visible');
-                    document.getElementById('service').classList.add('error');
                     valid = false;
                 } else {
                     document.getElementById('serviceError').classList.remove('visible');
-                    document.getElementById('service').classList.remove('error');
                 }
 
                 confirmBtn.disabled = !valid || !selectedSlot || isSubmitting;
                 return valid;
             }
 
-            // ---- SUBMIT BOOKING ----
+            // ---- SUBMIT BOOKING (UPDATED for Checkboxes) ----
             async function submitBooking(e) {
                 e.preventDefault();
 
@@ -1866,13 +1959,14 @@
                 const name = document.getElementById('fullName').value.trim();
                 const email = document.getElementById('email').value.trim();
                 const phone = document.getElementById('phone').value.trim();
-                const service = document.getElementById('service').value;
+                const serviceInputs = document.querySelectorAll('input[name="service"]:checked');
+                const serviceValues = Array.from(serviceInputs).map(el => el.value);
 
                 const payload = {
                     name: name,
                     email: email,
                     phone: phone || null,
-                    service: service,
+                    services: serviceValues,
                     startTime: selectedSlot
                 };
 
@@ -1896,11 +1990,10 @@
                     const data = await response.json();
 
                     if (data.success) {
-                        // Show confirmation
                         document.getElementById('confirmDateTime').textContent = formatFullDateTime(selectedSlot);
                         document.getElementById('confirmName').textContent = name;
                         document.getElementById('confirmEmail').textContent = email;
-                        document.getElementById('confirmService').textContent = service;
+                        document.getElementById('confirmService').textContent = serviceValues.join(', ');
                         goToStep(3);
                     } else {
                         throw new Error(data.message || 'Booking failed. Please try again.');
@@ -1909,12 +2002,11 @@
                 } catch (err) {
                     console.error('Booking error:', err);
                     showError(err.message || 'Something went wrong. Please try again.');
-                    // If using mock, simulate success
                     if (API_BASE.includes('YOUR-BACKEND-URL')) {
                         document.getElementById('confirmDateTime').textContent = formatFullDateTime(selectedSlot);
                         document.getElementById('confirmName').textContent = name;
                         document.getElementById('confirmEmail').textContent = email;
-                        document.getElementById('confirmService').textContent = service;
+                        document.getElementById('confirmService').textContent = serviceValues.join(', ');
                         goToStep(3);
                         showError('Using mock data — replace YOUR-BACKEND-URL with your real API.');
                     }
@@ -1939,7 +2031,9 @@
             // Real-time validation
             document.getElementById('fullName').addEventListener('input', validateForm);
             document.getElementById('email').addEventListener('input', validateForm);
-            document.getElementById('service').addEventListener('change', validateForm);
+            document.querySelectorAll('input[name="service"]').forEach(el => {
+                el.addEventListener('change', validateForm);
+            });
 
             bookingForm.addEventListener('submit', submitBooking);
 
@@ -2058,8 +2152,6 @@
 
             // ---- INIT ----
             renderDatePicker();
-
-            // Set initial step
             goToStep(1);
 
         })();

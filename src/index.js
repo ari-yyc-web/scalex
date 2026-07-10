@@ -176,8 +176,8 @@ async function handleBook(request, env) {
               Need to reschedule or have a question before then? Just reply to this email or reach us at <a href="mailto:info@scalex.ink" style="color:#1a1a1a;">info@scalex.ink</a> or <a href="tel:+18253952510" style="color:#1a1a1a;">(825) 395-2510</a>.
             </p>
           </div>
-          <div style="background: #1a1a1a; padding: 24px; text-align: center;">
-            <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 28px; filter: invert(1) brightness(10);" />
+          <div style="background: #f5f5f5; padding: 24px; text-align: center; border-top: 1px solid #e8e8e8;">
+            <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 28px;" />
             <p style="color: #7a7a7a; font-size: 12px; margin: 12px 0 0 0;">
               Digital services for small businesses.
             </p>

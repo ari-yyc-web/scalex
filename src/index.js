@@ -177,7 +177,7 @@ async function handleBook(request, env) {
             </p>
           </div>
           <div style="background: #f5f5f5; padding: 24px; text-align: center; border-top: 1px solid #e8e8e8;">
-            <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 28px;" />
+            <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 48px;" />
             <p style="color: #7a7a7a; font-size: 12px; margin: 12px 0 0 0;">
               Digital services for small businesses.
             </p>

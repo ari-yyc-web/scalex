@@ -151,7 +151,19 @@ async function handleBook(request, env) {
       from: 'Scalex <bookings@scalex.ink>',
       to: email,
       subject: `You're booked — ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', dateStyle: 'long', timeStyle: 'short' })}`,
-      html: `
+      html: `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="color-scheme" content="light" />
+<meta name="supported-color-schemes" content="light" />
+<style>
+  :root { color-scheme: light; supported-color-schemes: light; }
+  body { background: #ffffff !important; }
+</style>
+</head>
+<body style="background: #ffffff; margin: 0; padding: 0;">
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; background: #ffffff;">
           <div style="background: #0a0a0a; padding: 32px 24px; text-align: center;">
             <h1 style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
@@ -189,9 +201,8 @@ async function handleBook(request, env) {
             </p>
           </div>
         </div>
-      `,
-    }),
-  });
+</body>
+</html>`,
 
   return new Response(JSON.stringify({ success: true, eventId: eventData.id }), {
     status: 200,

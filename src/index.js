@@ -141,17 +141,43 @@ async function handleBook(request, env) {
   const eventData = await insertRes.json();
   if (!insertRes.ok) throw new Error(JSON.stringify(eventData));
 
-  await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${env.RESEND_API_KEY}`,
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
+  body: JSON.stringify({
       from: 'Scalex <bookings@scalex.ink>',
       to: email,
-      subject: 'Your call with Scalex is confirmed',
-      html: `<p>Hi ${name},</p><p>Your call is booked for <strong>${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', dateStyle: 'full', timeStyle: 'short' })}</strong>.</p><p>Talk soon,<br/>Scalex</p>`,
+      subject: `You're booked — ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', dateStyle: 'long', timeStyle: 'short' })}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; max-width: 480px; margin: 0 auto; background: #ffffff;">
+          <div style="background: #0a0a0a; padding: 32px 24px; text-align: center;">
+            <h1 style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
+          </div>
+          <div style="padding: 32px 24px;">
+            <p style="font-size: 16px; color: #1a1a1a; line-height: 1.6;">
+              Your call with Scalex is confirmed. Here's what to expect:
+            </p>
+            <div style="background: #f5f5f5; border-radius: 8px; padding: 20px; margin: 20px 0;">
+              <p style="margin: 0 0 8px 0; font-size: 14px; color: #7a7a7a; text-transform: uppercase; letter-spacing: 0.5px;">Date &amp; Time</p>
+              <p style="margin: 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+                ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', weekday: 'long', month: 'long', day: 'numeric' })}
+              </p>
+              <p style="margin: 4px 0 0 0; font-size: 18px; font-weight: 700; color: #1a1a1a;">
+                ${start.toLocaleString('en-US', { timeZone: 'America/Edmonton', hour: 'numeric', minute: '2-digit' })} MT
+              </p>
+            </div>
+            <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6;">
+              We'll call you at <strong>${phone || 'the number you provided'}</strong> at that time — no need to dial in or click a link. Just be ready to chat for 15–30 minutes.
+            </p>
+            <p style="font-size: 15px; color: #5a5a5a; line-height: 1.6;">
+              Need to reschedule or have a question before then? Just reply to this email or reach us at <a href="mailto:info@scalex.ink" style="color:#1a1a1a;">info@scalex.ink</a> or <a href="tel:+18253952510" style="color:#1a1a1a;">(825) 395-2510</a>.
+            </p>
+          </div>
+          <div style="background: #1a1a1a; padding: 24px; text-align: center;">
+            <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 28px; filter: invert(1) brightness(10);" />
+            <p style="color: #7a7a7a; font-size: 12px; margin: 12px 0 0 0;">
+              Digital services for small businesses.
+            </p>
+          </div>
+        </div>
+      `,
     }),
   });
 

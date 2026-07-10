@@ -158,26 +158,39 @@ async function handleBook(request, env) {
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="color-scheme" content="light" />
 <meta name="supported-color-schemes" content="light" />
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Stack+Sans+Headline&display=swap" rel="stylesheet">
 <style>
   :root { color-scheme: light; supported-color-schemes: light; }
-  body { background: #ffffff !important; }
-  img { -ms-interpolation-mode: bicubic; }
-  @media (prefers-color-scheme: dark) {
-    img { filter: none !important; -webkit-filter: none !important; }
+  body { background: #ffffff !important; margin: 0; padding: 0; }
+  .logo-text {
+    font-family: 'Stack Sans Headline', 'Century Gothic', 'Futura', -apple-system, sans-serif;
+    font-size: 42px;
+    letter-spacing: 2px;
+    color: #ffffff;
+    margin: 0;
+  }
+  @media screen and (max-width: 480px) {
+    .email-container { width: 100% !important; }
+    .header-title { font-size: 18px !important; }
+    .content-padding { padding: 24px 16px !important; }
+    .logo-text { font-size: 32px !important; }
+    .footer-padding { padding: 32px 16px !important; }
   }
 </style>
 </head>
 <body style="margin: 0; padding: 0;">
 <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background: #ffffff;">
 <tr><td align="center">
-<table role="presentation" width="480" cellpadding="0" cellspacing="0" style="max-width: 480px; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
+<table role="presentation" class="email-container" width="480" cellpadding="0" cellspacing="0" style="max-width: 480px; width: 100%; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;">
   <tr>
     <td bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 32px 24px; text-align: center;">
-      <h1 style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
+      <h1 class="header-title" style="color: #ffffff; font-size: 20px; margin: 0;">You're all set, ${name.split(' ')[0]}!</h1>
     </td>
   </tr>
   <tr>
-    <td style="padding: 32px 24px;">
+    <td class="content-padding" style="padding: 32px 24px;">
       <p style="font-size: 16px; color: #1a1a1a; line-height: 1.6;">
         Your call with Scalex is confirmed. Here's what to expect:
       </p>
@@ -201,8 +214,8 @@ async function handleBook(request, env) {
     </td>
   </tr>
   <tr>
-    <td bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 24px; text-align: center;">
-      <img src="https://scalex.ink/logo.png" alt="Scalex" style="height: 48px; display: block; margin: 0 auto;" />
+    <td class="footer-padding" bgcolor="#0a0a0a" style="background-color: #0a0a0a; padding: 40px 24px; text-align: center;">
+      <p class="logo-text">SCALEX</p>
       <p style="color: #aaaaaa; font-size: 12px; margin: 12px 0 0 0;">
         Digital services for small businesses.
       </p>

@@ -3,3 +3,7 @@ main = "src/index.js"
 compatibility_date = "2026-07-09"
 
 [vars]
+
+[assets]
+directory = "./public"
+binding = "ASSETS"

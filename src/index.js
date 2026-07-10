@@ -14,10 +14,11 @@ async function getGoogleAccessToken(clientEmail, privateKeyPem) {
 
   const unsignedToken = `${encode(header)}.${encode(claimSet)}`;
 
-  const pemContents = privateKeyPem
+const pemContents = privateKeyPem
     .replace(/-----BEGIN PRIVATE KEY-----/, '')
     .replace(/-----END PRIVATE KEY-----/, '')
-    .replace(/\n/g, '')
+    .replace(/\\n/g, '')
+    .replace(/\s/g, '')
     .trim();
 
   const binaryDer = Uint8Array.from(atob(pemContents), (c) => c.charCodeAt(0));

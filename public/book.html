@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" data-theme="light">
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -2042,10 +2042,8 @@
             const toggleDot = document.getElementById('toggleDot');
             const html = document.documentElement;
 
-            const hour = new Date().getHours();
-            const isNightTime = hour >= 18 || hour < 6;
             const storedTheme = localStorage.getItem('scalex-theme');
-            let currentTheme = storedTheme || (isNightTime ? 'dark' : 'light');
+            let currentTheme = storedTheme || 'dark';
 
             function setTheme(theme) {
                 currentTheme = theme;

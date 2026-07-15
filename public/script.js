@@ -6,11 +6,8 @@
             const toggleDot = document.getElementById('toggleDot');
             const html = document.documentElement;
 
-            const hour = new Date().getHours();
-            const isNightTime = hour >= 18 || hour < 6;
-
             const storedTheme = localStorage.getItem('scalex-theme');
-            let currentTheme = storedTheme || (isNightTime ? 'dark' : 'light');
+            let currentTheme = storedTheme || 'dark';
 
             function setTheme(theme) {
                 currentTheme = theme;

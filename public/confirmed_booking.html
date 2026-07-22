@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- deploy: 2026-07-20b (cache-bust: forces new edge ETag) -->
 <html lang="en" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
@@ -38,17 +39,14 @@
       &monthly=304&setup=896&golive=Aug%209,%202026
 
   ---------------------------------------------------------------------
-  CALENDLY — drop your scheduling link into CALENDLY_URL below (the
-  constant is the first thing in the config <script>). Until you do,
-  the booking area shows a friendly placeholder instead of a broken
-  embed.
+  BOOKING — the kickoff scheduler uses the SAME Google Calendar backend
+  as the /book page (Cloudflare Worker at API_BASE, endpoints
+  /api/availability + /api/book). The confirmed business name and the
+  selected services are carried in from the URL and sent with the
+  booking, so the created calendar event reads "Scalex Kickoff —
+  <Business>". No third-party embed, no external scheduling link.
   =====================================================================
 -->
-
-<!-- Calendly config — REPLACE THIS with your real scheduling link. -->
-<script>
-  const CALENDLY_URL = "REPLACE_ME";
-</script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -397,40 +395,297 @@
   }
   .book-head .icon svg { width: 24px; height: 24px; }
 
-  .calendly-mount { position: relative; z-index: 1; }
-  .calendly-inline-widget {
-    min-width: 320px;
-    height: 660px;
-    border-radius: var(--radius-sm);
-    overflow: hidden;
+  .booking-mount { position: relative; z-index: 1; }
+
+  /* ---- Step indicator ---- */
+  .cb-steps {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
   }
-  @media (max-width: 640px) {
-    .calendly-inline-widget { height: 900px; }
+  .cb-step-dot {
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    font-family: var(--font-head);
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    background: var(--glass-2);
+    border: 1px solid var(--glass-brd);
+    flex-shrink: 0;
+    transition: all 0.3s var(--ease);
+  }
+  .cb-step-dot.active {
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    box-shadow: 0 6px 18px -6px var(--accent-glow);
+  }
+  .cb-step-dot.done {
+    color: #fff;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    opacity: 0.55;
+  }
+  .cb-step-line {
+    flex: 1;
+    height: 1px;
+    background: var(--glass-brd);
+    max-width: 46px;
+  }
+  .cb-step-line.done { background: var(--accent-2); opacity: 0.5; }
+  .cb-step-name {
+    font-size: 0.74rem;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    transition: color 0.3s var(--ease);
+  }
+  .cb-step-name.active { color: var(--accent-hi); }
+  @media (max-width: 520px) {
+    .cb-step-name { display: none; }
+    .cb-step-line { max-width: none; }
   }
 
-  /* Placeholder shown until CALENDLY_URL is set */
-  .cal-placeholder {
-    border: 1px dashed var(--glass-brd-2);
-    border-radius: var(--radius-sm);
-    background: var(--glass-2);
-    padding: 40px 24px;
-    text-align: center;
+  /* ---- Panels ---- */
+  .cb-panel { display: none; }
+  .cb-panel.active { display: block; animation: cbFade 0.4s var(--ease); }
+  @keyframes cbFade {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: none; }
   }
-  .cal-placeholder h3 {
+  .cb-panel-title {
     font-family: var(--font-head);
     font-weight: 600;
-    font-size: 1.15rem;
-    margin-bottom: 8px;
+    font-size: 1.12rem;
+    margin-bottom: 4px;
   }
-  .cal-placeholder p { color: var(--text-muted); font-size: 0.95rem; max-width: 26rem; margin: 0 auto; }
-  .cal-placeholder code {
-    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-    background: rgba(168,85,247,0.14);
-    color: var(--accent-hi);
-    padding: 2px 7px;
-    border-radius: 6px;
-    font-size: 0.88em;
+  .cb-panel-sub { color: var(--text-muted); font-size: 0.94rem; margin-bottom: 20px; }
+
+  /* ---- Error banner ---- */
+  .cb-error {
+    display: none;
+    background: rgba(239, 68, 68, 0.14);
+    border: 1px solid rgba(239, 68, 68, 0.4);
+    color: #fecaca;
+    padding: 11px 15px;
+    border-radius: var(--radius-sm);
+    font-size: 0.92rem;
+    margin-bottom: 16px;
   }
+  .cb-error.visible { display: block; }
+
+  /* ---- Date picker ---- */
+  .cb-datepicker {
+    display: flex;
+    gap: 10px;
+    overflow-x: auto;
+    padding: 2px 2px 12px;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent-2) transparent;
+  }
+  .cb-datepicker::-webkit-scrollbar { height: 5px; }
+  .cb-datepicker::-webkit-scrollbar-thumb { background: var(--accent-2); border-radius: 4px; }
+  .cb-date-btn {
+    flex-shrink: 0;
+    min-width: 72px;
+    min-height: 62px;
+    padding: 10px 16px;
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius-sm);
+    background: var(--glass-2);
+    color: var(--text-soft);
+    cursor: pointer;
+    font-family: var(--font-body);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3px;
+    scroll-snap-align: start;
+    transition: all 0.25s var(--ease);
+  }
+  .cb-date-btn:hover { border-color: var(--glass-brd-2); transform: translateY(-2px); }
+  .cb-date-btn .dn {
+    font-size: 0.64rem;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    color: var(--text-muted);
+  }
+  .cb-date-btn .dnum { font-family: var(--font-head); font-size: 1.15rem; font-weight: 700; color: var(--text); }
+  .cb-date-btn.selected {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    box-shadow: 0 8px 22px -8px var(--accent-glow);
+  }
+  .cb-date-btn.selected .dn,
+  .cb-date-btn.selected .dnum { color: #fff; }
+
+  /* ---- Time slots ---- */
+  .cb-slots {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(104px, 1fr));
+    gap: 10px;
+    margin-top: 18px;
+  }
+  .cb-time-btn {
+    padding: 12px 14px;
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius-sm);
+    background: var(--glass-2);
+    color: var(--text-soft);
+    cursor: pointer;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 500;
+    min-height: 46px;
+    transition: all 0.25s var(--ease);
+  }
+  .cb-time-btn:hover { border-color: var(--glass-brd-2); transform: translateY(-2px); }
+  .cb-time-btn.selected {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    border-color: transparent;
+    color: #fff;
+    box-shadow: 0 8px 22px -8px var(--accent-glow);
+  }
+  .cb-no-slots { padding: 22px; text-align: center; color: var(--text-muted); font-size: 0.94rem; }
+
+  /* ---- Loading ---- */
+  .cb-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 22px;
+    color: var(--text-muted);
+    font-size: 0.94rem;
+  }
+  .cb-spinner {
+    width: 22px; height: 22px;
+    border: 3px solid var(--glass-brd);
+    border-top-color: var(--accent-hi);
+    border-radius: 50%;
+    animation: cbSpin 0.7s linear infinite;
+    display: inline-block;
+  }
+  @keyframes cbSpin { to { transform: rotate(360deg); } }
+
+  /* ---- Selected slot pill ---- */
+  .cb-slot-display {
+    padding: 12px 16px;
+    background: var(--glass-2);
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius-sm);
+    font-size: 0.94rem;
+    color: var(--text-soft);
+    margin-bottom: 18px;
+  }
+  .cb-slot-display strong { color: var(--text); }
+
+  /* ---- Form ---- */
+  .cb-form { display: flex; flex-direction: column; gap: 16px; }
+  .cb-field { display: flex; flex-direction: column; gap: 5px; }
+  .cb-field label { font-size: 0.85rem; font-weight: 600; color: var(--text); }
+  .cb-field label .req { color: #f87171; }
+  .cb-field label .opt { color: var(--text-muted); font-weight: 400; }
+  .cb-field input {
+    padding: 12px 15px;
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-size: 1rem;
+    background: rgba(255,255,255,0.03);
+    color: var(--text);
+    min-height: 48px;
+    transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+  }
+  .cb-field input::placeholder { color: var(--text-muted); }
+  .cb-field input:focus { outline: none; border-color: var(--accent); background: rgba(255,255,255,0.05); }
+  .cb-field input.error { border-color: #f87171; }
+  .cb-err { font-size: 0.8rem; color: #f87171; display: none; }
+  .cb-err.visible { display: block; }
+
+  .cb-readonly {
+    padding: 12px 15px;
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius-sm);
+    background: linear-gradient(135deg, rgba(168,85,247,0.14), rgba(124,58,237,0.08));
+    color: var(--lavender);
+    font-weight: 600;
+    min-height: 48px;
+    display: flex;
+    align-items: center;
+  }
+
+  /* ---- Buttons ---- */
+  .cb-actions { display: flex; gap: 12px; margin-top: 8px; flex-wrap: wrap; }
+  .cb-actions-end { justify-content: flex-end; }
+  .cb-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 13px 26px;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.98rem;
+    cursor: pointer;
+    min-height: 50px;
+    border: 1px solid transparent;
+    transition: all 0.25s var(--ease);
+  }
+  .cb-btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    box-shadow: 0 10px 26px -10px var(--accent-glow);
+  }
+  .cb-btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 14px 32px -10px var(--accent-glow); }
+  .cb-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+  .cb-btn-ghost {
+    background: var(--glass-2);
+    border-color: var(--glass-brd);
+    color: var(--text-soft);
+  }
+  .cb-btn-ghost:hover { border-color: var(--glass-brd-2); color: var(--text); }
+
+  /* ---- Confirmation ---- */
+  .cb-confirm { text-align: center; padding: 10px 0; }
+  .cb-check-lg {
+    width: 62px; height: 62px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent-hi), var(--accent-2));
+    color: #fff;
+    display: grid;
+    place-items: center;
+    margin: 0 auto 18px;
+    box-shadow: 0 10px 30px -8px var(--accent-glow);
+  }
+  .cb-check-lg svg { width: 30px; height: 30px; }
+  .cb-confirm h3 { font-family: var(--font-head); font-weight: 600; font-size: 1.4rem; margin-bottom: 8px; }
+  .cb-confirm > p { color: var(--text-soft); max-width: 26rem; margin: 0 auto; }
+  .cb-details {
+    background: var(--glass-2);
+    border: 1px solid var(--glass-brd);
+    border-radius: var(--radius-sm);
+    padding: 18px 20px;
+    margin: 20px auto 0;
+    max-width: 380px;
+    text-align: left;
+    font-size: 0.94rem;
+    color: var(--text-soft);
+  }
+  .cb-details p { margin-bottom: 6px; }
+  .cb-details p:last-child { margin-bottom: 0; }
+  .cb-details strong { color: var(--text); }
 
   /* ===== WHAT HAPPENS NOW ===== */
   .steps { margin-top: 30px; }
@@ -614,7 +869,98 @@
           <p class="sub">Pick a time that works for you — this is where we align on everything before we start building.</p>
         </div>
       </div>
-      <div class="calendly-mount" id="calendly-mount"></div>
+      <div class="booking-mount" id="booking-mount">
+
+        <!-- Step indicator -->
+        <div class="cb-steps" aria-hidden="true">
+          <span class="cb-step-dot active" id="cbDot1">1</span>
+          <span class="cb-step-name active" id="cbName1">Pick time</span>
+          <span class="cb-step-line" id="cbLine1"></span>
+          <span class="cb-step-dot" id="cbDot2">2</span>
+          <span class="cb-step-name" id="cbName2">Your details</span>
+          <span class="cb-step-line" id="cbLine2"></span>
+          <span class="cb-step-dot" id="cbDot3">3</span>
+          <span class="cb-step-name" id="cbName3">Done</span>
+        </div>
+
+        <div class="cb-error" id="cbError" role="alert"></div>
+
+        <!-- ===== STEP 1: date + time ===== -->
+        <div class="cb-panel active" id="cbPanel1">
+          <div class="cb-panel-title">Pick a date and time</div>
+          <div class="cb-panel-sub">Choose a day, then an available slot. Times shown in Mountain Time (MT).</div>
+
+          <div class="cb-datepicker" id="cbDatePicker"></div>
+
+          <div id="cbSlotsContainer">
+            <div class="cb-loading" id="cbSlotsLoading" style="display:none;">
+              <span class="cb-spinner"></span> Loading available times…
+            </div>
+            <div id="cbTimeSlots"></div>
+          </div>
+
+          <div class="cb-actions cb-actions-end">
+            <button type="button" class="cb-btn cb-btn-primary" id="cbToStep2" disabled>Continue →</button>
+          </div>
+        </div>
+
+        <!-- ===== STEP 2: details ===== -->
+        <div class="cb-panel" id="cbPanel2">
+          <div class="cb-panel-title">Your details</div>
+          <div class="cb-panel-sub">We'll send your kickoff confirmation here.</div>
+
+          <div class="cb-slot-display">
+            <strong>Selected:</strong> <span id="cbSelectedSlot">—</span>
+          </div>
+
+          <form class="cb-form" id="cbForm" novalidate>
+            <div class="cb-field" id="cbBusinessField" style="display:none;">
+              <label>Business</label>
+              <div class="cb-readonly" id="cbBusinessValue">—</div>
+            </div>
+
+            <div class="cb-field">
+              <label for="cbName">Your name <span class="req">*</span></label>
+              <input type="text" id="cbName" placeholder="e.g. Jane Smith" autocomplete="name" required />
+              <div class="cb-err" id="cbNameErr">Please enter your name.</div>
+            </div>
+
+            <div class="cb-field">
+              <label for="cbEmail">Email address <span class="req">*</span></label>
+              <input type="email" id="cbEmail" placeholder="you@yourbusiness.com" autocomplete="email" required />
+              <div class="cb-err" id="cbEmailErr">Please enter a valid email address.</div>
+            </div>
+
+            <div class="cb-field">
+              <label for="cbPhone">Phone <span class="opt">(optional)</span></label>
+              <input type="tel" id="cbPhone" placeholder="(555) 000-0000" autocomplete="tel" />
+            </div>
+
+            <div class="cb-actions">
+              <button type="button" class="cb-btn cb-btn-ghost" id="cbBack">← Back</button>
+              <button type="submit" class="cb-btn cb-btn-primary" id="cbConfirm">Confirm kickoff call</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- ===== STEP 3: confirmation ===== -->
+        <div class="cb-panel" id="cbPanel3">
+          <div class="cb-confirm">
+            <div class="cb-check-lg" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+            </div>
+            <h3>Kickoff call booked</h3>
+            <p>A confirmation email is on its way. We'll see you then!</p>
+            <div class="cb-details">
+              <p><strong>When:</strong> <span id="cbCfDateTime">—</span></p>
+              <p id="cbCfBusinessRow" style="display:none;"><strong>Business:</strong> <span id="cbCfBusiness">—</span></p>
+              <p><strong>Name:</strong> <span id="cbCfName">—</span></p>
+              <p><strong>Email:</strong> <span id="cbCfEmail">—</span></p>
+            </div>
+          </div>
+        </div>
+
+      </div>
     </section>
 
     <!-- ===== WHAT HAPPENS NOW ===== -->
@@ -748,39 +1094,279 @@
       document.getElementById("setup-value").textContent = setupFmt || "To be confirmed";
       document.getElementById("golive-value").textContent = goliveRaw || "To be confirmed";
 
-      /* ---------- Calendly inline embed ---------- */
-      const mount = document.getElementById("calendly-mount");
-      const urlSet = CALENDLY_URL && CALENDLY_URL !== "REPLACE_ME";
+      /* =====================================================================
+         BOOKING WIDGET — same Google Calendar backend as /book
+         Talks to the Cloudflare Worker: /api/availability + /api/book.
+         The business name (+ confirmed services) are carried in from the URL
+         and sent with the booking so the calendar event reads clearly.
+         ===================================================================== */
+      (function () {
+        // ---- CONFIG (identical to the Book a Call page) ----
+        const API_BASE = "https://scalex.pr0xy0021-pr.workers.dev";
+        const AVAILABILITY_URL = API_BASE + "/api/availability";
+        const BOOK_URL = API_BASE + "/api/book";
 
-      if (urlSet) {
-        // Prefill name/email is optional; we pass the business name as an
-        // "a1" answer if your Calendly form has a custom question. Harmless
-        // if it doesn't. Keep the embed dependency the only external asset.
-        const widget = document.createElement("div");
-        widget.className = "calendly-inline-widget";
-        widget.setAttribute("data-auto-load", "false");
+        // ---- STATE ----
+        let selectedDate = null;
+        let selectedSlot = null;
+        let isSubmitting = false;
 
-        let embedUrl = CALENDLY_URL;
+        // ---- DOM ----
+        const $ = (id) => document.getElementById(id);
+        const datePicker = $("cbDatePicker");
+        const slotsLoading = $("cbSlotsLoading");
+        const timeSlots = $("cbTimeSlots");
+        const toStep2Btn = $("cbToStep2");
+        const backBtn = $("cbBack");
+        const confirmBtn = $("cbConfirm");
+        const form = $("cbForm");
+        const errorBanner = $("cbError");
+        const selectedSlotEl = $("cbSelectedSlot");
+
+        const panels = [$("cbPanel1"), $("cbPanel2"), $("cbPanel3")];
+        const dots = [$("cbDot1"), $("cbDot2"), $("cbDot3")];
+        const names = [$("cbName1"), $("cbName2"), $("cbName3")];
+        const lines = [$("cbLine1"), $("cbLine2")];
+
+        // ---- Prefill business (from the confirmed plan) ----
         if (businessName) {
-          const sep = embedUrl.indexOf("?") === -1 ? "?" : "&";
-          embedUrl += sep + "a1=" + encodeURIComponent(businessName);
+          $("cbBusinessField").style.display = "flex";
+          $("cbBusinessValue").textContent = businessName;
         }
-        widget.setAttribute("data-url", embedUrl);
-        mount.appendChild(widget);
 
-        const s = document.createElement("script");
-        s.src = "https://assets.calendly.com/assets/external/widget.js";
-        s.async = true;
-        document.body.appendChild(s);
-      } else {
-        // Friendly placeholder so nothing looks broken before the link is set.
-        mount.innerHTML =
-          '<div class="cal-placeholder" role="note">' +
-          '<h3>Calendar loading soon</h3>' +
-          '<p>The scheduling calendar will appear here. ' +
-          '(Setup note: replace <code>CALENDLY_URL</code> at the top of this file with your Calendly link.)</p>' +
-          '</div>';
-      }
+        // ---- HELPERS ----
+        function formatTime(iso) {
+          return new Date(iso).toLocaleTimeString("en-US", {
+            hour: "numeric", minute: "2-digit", timeZone: "America/Edmonton",
+          });
+        }
+        function formatFullDateTime(iso) {
+          return new Date(iso).toLocaleString("en-US", {
+            weekday: "short", month: "short", day: "numeric",
+            hour: "numeric", minute: "2-digit", timeZone: "America/Edmonton",
+          }) + " MT";
+        }
+        function getDateStr(d) {
+          const y = d.getFullYear();
+          const m = String(d.getMonth() + 1).padStart(2, "0");
+          const day = String(d.getDate()).padStart(2, "0");
+          return y + "-" + m + "-" + day;
+        }
+        function getWeekdays(count) {
+          const dates = [];
+          const d = new Date();
+          d.setHours(0, 0, 0, 0);
+          while (dates.length < count) {
+            const day = d.getDay();
+            if (day !== 0 && day !== 6) dates.push(new Date(d));
+            d.setDate(d.getDate() + 1);
+          }
+          return dates;
+        }
+        function showError(msg) {
+          errorBanner.textContent = msg || "Something went wrong. Please try again.";
+          errorBanner.classList.add("visible");
+        }
+        function hideError() { errorBanner.classList.remove("visible"); }
+
+        // ---- STEP NAVIGATION ----
+        function goToStep(step) {
+          hideError();
+          panels.forEach((p, i) => p.classList.toggle("active", i === step - 1));
+          dots.forEach((dot, i) => {
+            dot.className = "cb-step-dot" +
+              (i === step - 1 ? " active" : i < step - 1 ? " done" : "");
+          });
+          names.forEach((n, i) => {
+            n.className = "cb-step-name" + (i === step - 1 ? " active" : "");
+          });
+          lines[0].className = "cb-step-line" + (step > 1 ? " done" : "");
+          lines[1].className = "cb-step-line" + (step > 2 ? " done" : "");
+
+          if (step === 2 && selectedSlot) {
+            selectedSlotEl.textContent = formatFullDateTime(selectedSlot);
+          }
+          const card = document.getElementById("book");
+          if (card) card.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+
+        // ---- DATE PICKER ----
+        function renderDatePicker() {
+          const dates = getWeekdays(14);
+          datePicker.innerHTML = "";
+          dates.forEach((date, index) => {
+            const dateStr = getDateStr(date);
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "cb-date-btn";
+            btn.dataset.date = dateStr;
+            const dn = document.createElement("span");
+            dn.className = "dn";
+            dn.textContent = date.toLocaleDateString("en-US", { weekday: "short" });
+            const dnum = document.createElement("span");
+            dnum.className = "dnum";
+            dnum.textContent = date.getDate();
+            btn.appendChild(dn);
+            btn.appendChild(dnum);
+            btn.addEventListener("click", () => selectDate(dateStr));
+            datePicker.appendChild(btn);
+            if (index === 0) {
+              btn.classList.add("selected");
+              selectedDate = dateStr;
+              fetchSlots(dateStr);
+            }
+          });
+        }
+
+        function selectDate(dateStr) {
+          selectedDate = dateStr;
+          selectedSlot = null;
+          toStep2Btn.disabled = true;
+          document.querySelectorAll(".cb-date-btn").forEach((b) => {
+            b.classList.toggle("selected", b.dataset.date === dateStr);
+          });
+          fetchSlots(dateStr);
+        }
+
+        // ---- FETCH SLOTS ----
+        async function fetchSlots(dateStr) {
+          hideError();
+          slotsLoading.style.display = "flex";
+          timeSlots.innerHTML = "";
+          try {
+            const res = await fetch(AVAILABILITY_URL + "?date=" + dateStr);
+            if (!res.ok) throw new Error("HTTP " + res.status);
+            const data = await res.json();
+            renderTimeSlots(data.slots || []);
+          } catch (err) {
+            console.error("Error fetching slots:", err);
+            showError("Could not load available times. Please try again or pick another date.");
+            timeSlots.innerHTML = '<div class="cb-no-slots">Unable to load times. Please try again.</div>';
+          } finally {
+            slotsLoading.style.display = "none";
+          }
+        }
+
+        function renderTimeSlots(slots) {
+          timeSlots.innerHTML = "";
+          if (!slots.length) {
+            timeSlots.innerHTML = '<div class="cb-no-slots">No open times on this day. Please pick another date.</div>';
+            return;
+          }
+          const grid = document.createElement("div");
+          grid.className = "cb-slots";
+          slots.forEach((slot) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            btn.className = "cb-time-btn";
+            btn.textContent = formatTime(slot);
+            btn.dataset.slot = slot;
+            btn.addEventListener("click", () => selectSlot(slot));
+            grid.appendChild(btn);
+          });
+          timeSlots.appendChild(grid);
+        }
+
+        function selectSlot(slot) {
+          selectedSlot = slot;
+          toStep2Btn.disabled = false;
+          document.querySelectorAll(".cb-time-btn").forEach((b) => {
+            b.classList.toggle("selected", b.dataset.slot === slot);
+          });
+        }
+
+        // ---- VALIDATION ----
+        function validate() {
+          const name = $("cbName").value.trim();
+          const email = $("cbEmail").value.trim();
+          let valid = true;
+
+          if (!name) {
+            $("cbNameErr").classList.add("visible");
+            $("cbName").classList.add("error");
+            valid = false;
+          } else {
+            $("cbNameErr").classList.remove("visible");
+            $("cbName").classList.remove("error");
+          }
+
+          const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+          if (!email || !emailRe.test(email)) {
+            $("cbEmailErr").classList.add("visible");
+            $("cbEmail").classList.add("error");
+            valid = false;
+          } else {
+            $("cbEmailErr").classList.remove("visible");
+            $("cbEmail").classList.remove("error");
+          }
+          return valid;
+        }
+
+        // ---- SUBMIT ----
+        async function submitBooking(e) {
+          e.preventDefault();
+          if (isSubmitting) return;
+          if (!validate()) return;
+          if (!selectedSlot) { showError("Please pick a time slot first."); return; }
+
+          const name = $("cbName").value.trim();
+          const email = $("cbEmail").value.trim();
+          const phone = $("cbPhone").value.trim();
+
+          const payload = {
+            name: name,
+            email: email,
+            phone: phone || null,
+            business: businessName || null,
+            services: services.length ? services : undefined,
+            startTime: selectedSlot,
+          };
+
+          isSubmitting = true;
+          confirmBtn.disabled = true;
+          confirmBtn.innerHTML = '<span class="cb-spinner" style="width:18px;height:18px;border-width:2px;"></span> Booking…';
+          hideError();
+
+          try {
+            const res = await fetch(BOOK_URL, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(payload),
+            });
+            if (!res.ok) {
+              const errData = await res.json().catch(() => ({}));
+              throw new Error(errData.error || errData.message || "Booking failed (HTTP " + res.status + ")");
+            }
+            const data = await res.json();
+            if (!data.success) throw new Error(data.message || "Booking failed. Please try again.");
+
+            $("cbCfDateTime").textContent = formatFullDateTime(selectedSlot);
+            $("cbCfName").textContent = name;
+            $("cbCfEmail").textContent = email;
+            if (businessName) {
+              $("cbCfBusinessRow").style.display = "block";
+              $("cbCfBusiness").textContent = businessName;
+            }
+            goToStep(3);
+          } catch (err) {
+            console.error("Booking error:", err);
+            showError(err.message || "Something went wrong. Please try again.");
+          } finally {
+            isSubmitting = false;
+            confirmBtn.disabled = false;
+            confirmBtn.innerHTML = "Confirm kickoff call";
+          }
+        }
+
+        // ---- LISTENERS ----
+        toStep2Btn.addEventListener("click", () => { if (selectedSlot) goToStep(2); });
+        backBtn.addEventListener("click", () => goToStep(1));
+        $("cbName").addEventListener("input", () => { if (errorBanner.classList.contains("visible")) hideError(); });
+        form.addEventListener("submit", submitBooking);
+
+        // ---- INIT ----
+        renderDatePicker();
+      })();
 
       /* ---------- Scroll reveal (gated by prefers-reduced-motion) ---------- */
       const reveals = document.querySelectorAll(".reveal");

@@ -106,7 +106,7 @@ async function handleAvailability(request, env) {
 
 async function handleBook(request, env) {
   const body = await request.json();
-  const { name, email, phone, service, startTime } = body;
+  const { name, email, phone, service, services, business, startTime } = body;
 
   if (!name || !email || !startTime) {
     return new Response(JSON.stringify({ error: 'Missing required fields' }), {
@@ -115,11 +115,32 @@ async function handleBook(request, env) {
     });
   }
 
+  // Accept either `services` (array, from the booking widgets) or the legacy
+  // `service` (single string). Fall back gracefully.
+  const serviceText = Array.isArray(services) && services.length
+    ? services.join(', ')
+    : (service || 'Not specified');
+
+  const businessName = typeof business === 'string' ? business.trim() : '';
+
   const accessToken = await getGoogleAccessToken(env.GOOGLE_CLIENT_EMAIL, env.GOOGLE_PRIVATE_KEY);
 
   const start = new Date(startTime);
   const end = new Date(start.getTime() + 30 * 60000);
   const calendarId = encodeURIComponent(env.GOOGLE_CALENDAR_ID);
+
+  // When a business name is supplied (confirmed-booking kickoff), lead the
+  // event title with it so the calendar reads "Scalex Kickoff — Business".
+  const summary = businessName
+    ? `Scalex Kickoff — ${businessName}`
+    : `Scalex Call — ${name}`;
+
+  const description =
+    (businessName ? `Business: ${businessName}\n` : '') +
+    `Contact: ${name}\n` +
+    `Services: ${serviceText}\n` +
+    `Phone: ${phone || 'N/A'}\n` +
+    `Email: ${email}`;
 
   const insertRes = await fetch(
     `https://www.googleapis.com/calendar/v3/calendars/${calendarId}/events`,
@@ -130,8 +151,8 @@ async function handleBook(request, env) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        summary: `Scalex Call — ${name}`,
-        description: `Service interested in: ${service || 'Not specified'}\nPhone: ${phone || 'N/A'}\nEmail: ${email}`,
+        summary,
+        description,
         start: { dateTime: start.toISOString(), timeZone: 'America/Edmonton' },
         end: { dateTime: end.toISOString(), timeZone: 'America/Edmonton' },
       }),
